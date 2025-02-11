@@ -31,3 +31,9 @@ pub struct UserResponse {
     pub name: String,
     pub paper_amount: i32,
 }
+
+#[derive(Deserialize)]
+pub struct ForgotPassInput {
+    pub email: String,
+    pub password: String,
+}

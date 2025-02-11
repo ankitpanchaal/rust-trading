@@ -1,6 +1,6 @@
 use actix_web::{post, get, web, HttpResponse, Responder, HttpRequest};
 use sqlx::PgPool;
-use crate::models::{SignupInput, LoginInput, User, UserResponse};
+use crate::models::{SignupInput, LoginInput, User, UserResponse, ForgotPassInput};
 use uuid::Uuid;
 use bcrypt::{hash, verify, DEFAULT_COST};
 use jsonwebtoken::{encode, decode, Header, Validation, EncodingKey, DecodingKey, TokenData, errors::Error as JwtError};
@@ -152,5 +152,32 @@ pub async fn get_user(pool: web::Data<PgPool>, req: HttpRequest) -> impl Respond
             HttpResponse::Ok().json(response)
         },
         Err(_) => HttpResponse::InternalServerError().body("Error fetching user"),
+    }
+}
+
+#[post("/forgot-pass")]
+pub async fn forgot_pass(pool: web::Data<PgPool>, item: web::Json<ForgotPassInput>) -> impl Responder {
+    let user_result = sqlx::query_as::<_, User>("SELECT * from users WHERE email = $1")
+    .bind(&item.email)
+    .fetch_one(pool.get_ref()).await;
+
+    let user = match user_result {
+        Ok(u) => u,
+        Err(_) => return HttpResponse::BadRequest().body("User not found"),
+    };
+
+    let hashed_password = match hash(&item.password, DEFAULT_COST) {
+        Ok(h) => h,
+        Err(_) => return HttpResponse::InternalServerError().body("Error hashing password"),
+    };
+
+    let rec = sqlx::query_as::<_,User>("UPDATE users SET hashed_password = $1 WHERE email = $2 RETURNING *")
+    .bind(&hashed_password)
+    .bind(&user.email)
+    .fetch_one(pool.get_ref()).await;
+
+    match rec {
+        Ok(_) => return HttpResponse::Ok().json("Password has been reset"),
+        Err(_) => return  HttpResponse::InternalServerError().body("Server error")
     }
 }

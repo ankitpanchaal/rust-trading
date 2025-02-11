@@ -8,5 +8,6 @@ pub fn init_routes(cfg: &mut web::ServiceConfig) {
             .service(auth::signup)
             .service(auth::login)
             .service(auth::get_user)
+            .service(auth::forgot_pass)
     );
 }
