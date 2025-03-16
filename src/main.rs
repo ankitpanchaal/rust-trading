@@ -4,6 +4,7 @@ use tracing_subscriber::FmtSubscriber;
 
 mod api;
 mod auth;
+mod market;
 mod config;
 mod db;
 mod error;

@@ -14,6 +14,7 @@ use crate::{
   config::Config,
   db::MongoDb,
   error::AppError,
+  market::routes::market_routes
 };
 
 pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
@@ -35,7 +36,8 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
   // Setup routes
   let api_routes = Router::new()
       .route("/health", get(health_check))
-      .nest("/auth", auth_routes(auth_service));
+      .nest("/auth", auth_routes(auth_service))
+      .nest("/market", market_routes());
   
   // Build the router - moved with_state before adding layers
   let app = Router::new()
