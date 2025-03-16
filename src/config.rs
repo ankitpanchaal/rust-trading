@@ -50,7 +50,7 @@ impl Config {
         let jwt_secret = env::var("JWT_SECRET")
             .map_err(|_| AppError::ConfigError("JWT_SECRET must be set".into()))?;
             
-        let jwt_expires_in_str = env::var("JWT_EXPIRES_IN").unwrap_or_else(|_| "60m".into());
+        let jwt_expires_in_str = env::var("JWT_EXPIRES_IN").unwrap_or_else(|_| "360m".into());
         let jwt_expires_in = parse_duration(&jwt_expires_in_str)
             .map_err(|_| AppError::ConfigError("Invalid JWT_EXPIRES_IN format".into()))?;
             

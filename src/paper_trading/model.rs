@@ -24,6 +24,7 @@ pub enum OrderStatus {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Order {
+    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
     pub id: Option<ObjectId>,
     pub user_id: ObjectId,
     pub symbol: String,
@@ -64,7 +65,7 @@ pub struct OrderResponse {
 impl From<Order> for OrderResponse {
     fn from(order: Order) -> Self {
         Self {
-            id: order.id.unwrap().to_string(),
+            id: order.id.map_or_else(|| "unknown".to_string(), |id| id.to_string()),
             symbol: order.symbol,
             order_type: order.order_type,
             side: order.side,
@@ -80,6 +81,7 @@ impl From<Order> for OrderResponse {
 // Position models
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Position {
+    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
     pub id: Option<ObjectId>,
     pub user_id: ObjectId,
     pub symbol: String,
@@ -108,7 +110,7 @@ pub struct PositionResponse {
 impl From<Position> for PositionResponse {
     fn from(position: Position) -> Self {
         Self {
-            id: position.id.unwrap().to_string(),
+            id: position.id.map_or_else(|| "unknown".to_string(), |id| id.to_string()),
             symbol: position.symbol,
             quantity: position.quantity,
             entry_price: position.entry_price,

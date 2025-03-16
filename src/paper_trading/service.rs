@@ -185,7 +185,11 @@ impl PaperTradingService {
         
         if position.quantity == order.quantity {
             // Close position completely
-            self.repository.delete_position(&position.id.unwrap()).await?;
+            if let Some(position_id) = &position.id {
+                self.repository.delete_position(position_id).await?;
+            } else {
+                return Err(AppError::ValidationError("Position ID not found".to_string()));
+            }
             return Ok(None);
         } else {
             // Reduce position
