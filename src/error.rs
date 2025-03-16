@@ -14,6 +14,9 @@ pub enum AppError {
   #[error("Authorization error: {0}")]
   AuthzError(String),
   
+  #[error("Authorization error: {0}")]
+  AuthorizationError(String),
+  
   #[error("Validation error: {0}")]
   ValidationError(String),
   
@@ -53,6 +56,7 @@ impl IntoResponse for AppError {
       let (status, error_message) = match self {
           AppError::AuthError(_) => (StatusCode::UNAUTHORIZED, self.to_string()),
           AppError::AuthzError(_) => (StatusCode::FORBIDDEN, self.to_string()),
+          AppError::AuthorizationError(_) => (StatusCode::FORBIDDEN, self.to_string()),
           AppError::ValidationError(_) => (StatusCode::BAD_REQUEST, self.to_string()),
           AppError::NotFoundError(_) => (StatusCode::NOT_FOUND, self.to_string()),
           AppError::DatabaseError(err) => (

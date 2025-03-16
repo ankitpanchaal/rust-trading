@@ -15,7 +15,12 @@ use crate::{
   db::MongoDb,
   error::AppError,
   market::{routes::market_routes, service::MarketService},
-  paper_trading::routes::paper_trading_routes, 
+  paper_trading::{
+    routes::paper_trading_routes,
+    repository::PaperTradingRepository,
+    service::PaperTradingService
+  },
+  strategies::routes::strategy_routes,
 };
 
 pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
@@ -35,12 +40,17 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
   let auth_service = AuthService::new(auth_repository, config.clone());
   let market_service = MarketService::new();
   
+  // Create paper trading repository and service
+  let paper_trading_repository = PaperTradingRepository::new(db.clone(), market_service.clone());
+  let paper_trading_service = PaperTradingService::new(paper_trading_repository, market_service.clone());
+  
   // Setup routes
   let api_routes = Router::new()
       .route("/health", get(health_check))
       .nest("/auth", auth_routes(auth_service))
       .nest("/market", market_routes())
-      .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()));
+      .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()))
+      .nest("/st", strategy_routes(db.clone(), paper_trading_service.clone(), market_service.clone(), config.clone()));
   
   // Build the router
   let app = Router::new()

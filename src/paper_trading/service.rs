@@ -341,4 +341,8 @@ impl PaperTradingService {
             current_balance: user_balance,
         })
     }
+
+    pub async fn get_user_balance(&self, user_id: &str) -> Result<f64, AppError> {
+        self.repository.get_user_balance(user_id).await
+    }
 }

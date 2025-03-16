@@ -13,3 +13,4 @@ pub use db::MongoDb;
 pub use error::AppError;
 pub mod market;
 pub mod paper_trading;
+pub mod strategies;
