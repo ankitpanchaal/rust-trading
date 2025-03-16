@@ -9,7 +9,8 @@ pub struct User {
     #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
     pub id: Option<ObjectId>,
     pub email: String,
-    pub password: String, // Hashed password
+    #[serde(skip_serializing)]
+    pub password: String,
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub role: UserRole,
@@ -17,6 +18,22 @@ pub struct User {
     pub created_at: DateTime<Utc>,
     #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
     pub updated_at: DateTime<Utc>,
+    // Paper trading properties
+    #[serde(default = "default_paper_trading_enabled")]
+    pub paper_trading_enabled: bool,
+    #[serde(default = "default_paper_balance")]
+    pub paper_balance_usd: f64,
+    // We'll keep track of initial paper balance for performance tracking
+    #[serde(default = "default_paper_balance")]
+    pub initial_paper_balance_usd: f64,
+}
+
+fn default_paper_trading_enabled() -> bool {
+    false
+}
+
+fn default_paper_balance() -> f64 {
+    10000.0  // Default $10,000 USD for paper trading
 }
 
 // User role enum
@@ -65,6 +82,9 @@ pub struct UserResponse {
     pub last_name: Option<String>,
     pub role: UserRole,
     pub created_at: DateTime<Utc>,
+    pub paper_trading_enabled: bool,
+    pub paper_balance_usd: f64,
+    pub initial_paper_balance_usd: f64,
 }
 
 // JWT claims structure
@@ -103,8 +123,17 @@ impl From<User> for UserResponse {
             last_name: user.last_name,
             role: user.role,
             created_at: user.created_at,
+            paper_trading_enabled: user.paper_trading_enabled,
+            paper_balance_usd: user.paper_balance_usd,
+            initial_paper_balance_usd: user.initial_paper_balance_usd,
         }
     }
+}
+
+#[derive(Debug, Deserialize, Validate)]
+pub struct EnablePaperTradingRequest {
+    #[validate(range(min = 100.0, max = 1000000.0, message = "Balance must be between $100 and $1,000,000"))]
+    pub initial_balance_usd: f64,
 }
 
 impl User {
@@ -120,6 +149,9 @@ impl User {
             role: UserRole::default(),
             created_at: now,
             updated_at: now,
+            initial_paper_balance_usd: default_paper_balance(),
+            paper_balance_usd: default_paper_balance(),
+            paper_trading_enabled: default_paper_trading_enabled(),
         }
     }
     
