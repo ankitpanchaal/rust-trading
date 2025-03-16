@@ -187,23 +187,6 @@ impl PaperTradingRepository {
         Ok(())
     }
 
-    pub async fn get_position_by_id(&self, position_id: &str) -> Result<Position, AppError> {
-        let position_id_obj = ObjectId::from_str(position_id)
-            .map_err(|_| AppError::ValidationError("Invalid position ID".to_string()))?;
-        
-        let positions_collection = self.db.collection("paper_trading_positions");
-        
-        let position_doc = positions_collection
-            .find_one(doc! { "_id": position_id_obj }, None)
-            .await?
-            .ok_or_else(|| AppError::NotFoundError("Position not found".to_string()))?;
-            
-        let position = bson::from_document::<Position>(position_doc)
-            .map_err(|e| AppError::InternalError(format!("Failed to deserialize position: {}", e)))?;
-        
-        Ok(position)
-    }
-
     pub async fn get_position_by_user_and_symbol(&self, user_id: &ObjectId, symbol: &str) -> Result<Option<Position>, AppError> {
         let positions_collection = self.db.collection("paper_trading_positions");
         

@@ -66,21 +66,6 @@ pub async fn get_positions(
   }
 }
 
-// Get a specific position by ID
-pub async fn get_position(
-  Extension(user_id): Extension<String>,
-  Path(position_id): Path<String>,
-  State(service): State<PaperTradingService>,
-) -> Result<Json<PositionResponse>, (StatusCode, Json<serde_json::Value>)> {
-  match service.get_position(&position_id).await {
-      Ok(position) => Ok(Json(position)),
-      Err(e) => Err((
-          StatusCode::INTERNAL_SERVER_ERROR,
-          Json(serde_json::json!({ "error": format!("{}", e) })),
-      )),
-  }
-}
-
 // Get orders
 pub async fn get_orders(
   Extension(user_id): Extension<String>,
@@ -121,14 +106,4 @@ pub async fn get_trading_stats(
           Json(serde_json::json!({ "error": format!("{}", e) })),
       )),
   }
-}
-
-// Since we're calculating position values on-demand, we can simplify this to a no-op
-// or remove it completely from the routes
-pub async fn update_positions(
-  Extension(_user_id): Extension<String>,
-  State(_service): State<PaperTradingService>,
-) -> Result<StatusCode, (StatusCode, Json<serde_json::Value>)> {
-  // Simply return OK since positions are updated on-demand
-  Ok(StatusCode::OK)
 }

@@ -221,25 +221,15 @@ impl PaperTradingService {
             position.current_price = price;
             position.unrealized_pnl = (price - position.entry_price) * position.quantity;
             
+            // Save updates to database
+            if let Some(_) = position.id {
+                self.repository.update_position(&position).await?;
+            }
+            
             position_responses.push(PositionResponse::from(position));
         }
-
+    
         Ok(position_responses)
-    }
-
-    pub async fn get_position(&self, position_id: &str) -> Result<PositionResponse, AppError> {
-        let mut position = self.repository.get_position_by_id(position_id).await?;
-        
-        // Update current price and PnL
-        let (price_str, _) = self.market_service.get_ticker_price(&position.symbol).await?;
-        let price = price_str.parse::<f64>().map_err(|_| {
-            AppError::InternalError(format!("Failed to parse price: {}", price_str))
-        })?;
-        
-        position.current_price = price;
-        position.unrealized_pnl = (price - position.entry_price) * position.quantity;
-        
-        Ok(PositionResponse::from(position))
     }
 
     pub async fn get_orders(&self, user_id: &str) -> Result<Vec<OrderResponse>, AppError> {

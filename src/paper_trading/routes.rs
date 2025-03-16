@@ -27,10 +27,6 @@ pub fn paper_trading_routes(db: MongoDb, market_service: MarketService, config: 
         
         // Positions
         .route("/positions", get(handler::get_positions))
-        .route("/positions/:position_id", get(handler::get_position))
-        // We can keep this endpoint for backward compatibility but it doesn't do much
-        .route("/positions/update", put(handler::update_positions))
-        
         // Account info
         .route("/balance", get(handler::get_balance))
         .route("/stats", get(handler::get_trading_stats)).layer(middleware::from_fn_with_state(auth_config, auth_middleware))
