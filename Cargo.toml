@@ -1,0 +1,46 @@
+[package]
+name = "my-api-service"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "A scalable REST API with authentication using Axum and MongoDB"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.36.0", features = ["full"] }
+
+# Web framework
+axum = { version = "0.7.4", features = ["macros"] }
+tower = { version = "0.4.13", features = ["timeout"] }
+tower-http = { version = "0.5.1", features = ["trace", "cors", "compression-gzip"] }
+hyper = { version = "1.1.0" }
+http = "1.0.0"
+
+# Serialization/Deserialization
+serde = { version = "1.0.196", features = ["derive"] }
+serde_json = "1.0.113"
+
+# Database
+mongodb = { version = "2.8.0", features = ["tokio-runtime"] }
+bson = { version = "2.14.0", features = ["chrono-0_4"] }
+
+# Authentication
+jsonwebtoken = "9.2.0"
+bcrypt = "0.15.0"
+rand = "0.8.5"
+
+# Error handling
+thiserror = "1.0.57"
+anyhow = "1.0.79"
+
+# Utilities
+chrono = { version = "0.4.34", features = ["serde"] }
+dotenv = "0.15.0"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+uuid = { version = "1.7.0", features = ["v4", "serde"] }
+validator = { version = "0.16.1", features = ["derive"] }
+
+[dev-dependencies]
+tokio-test = "0.4.3"
+reqwest = { version = "0.11.24", features = ["json"] }
