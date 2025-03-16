@@ -40,7 +40,7 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
       .route("/health", get(health_check))
       .nest("/auth", auth_routes(auth_service))
       .nest("/market", market_routes())
-      .nest("/trading", paper_trading_routes(db.clone(), market_service.clone()));
+      .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()));
   
   // Build the router
   let app = Router::new()
