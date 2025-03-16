@@ -1,3 +1,5 @@
+use mongodb::bson::DateTime as BsonDateTime;
+use mongodb::bson::doc;
 use chrono::{DateTime, Utc};
 use mongodb::bson::{self, oid::ObjectId, Document};
 use serde::{Deserialize, Serialize};
@@ -156,6 +158,25 @@ impl User {
     }
     
     pub fn into_document(self) -> Document {
-        mongodb::bson::to_document(&self).unwrap()
+        use mongodb::bson::DateTime as BsonDateTime;
+    
+        let mut doc = doc! {
+            "email": self.email,
+            "password": self.password,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "role": bson::to_bson(&self.role).unwrap(),
+            "created_at": BsonDateTime::from_chrono(self.created_at),
+            "updated_at": BsonDateTime::from_chrono(self.updated_at),
+            "paper_trading_enabled": self.paper_trading_enabled,
+            "paper_balance_usd": self.paper_balance_usd,
+            "initial_paper_balance_usd": self.initial_paper_balance_usd
+        };
+        
+        if let Some(id) = self.id {
+            doc.insert("_id", id);
+        }
+        
+        doc
     }
 }

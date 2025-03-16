@@ -55,17 +55,17 @@ impl IntoResponse for AppError {
           AppError::AuthzError(_) => (StatusCode::FORBIDDEN, self.to_string()),
           AppError::ValidationError(_) => (StatusCode::BAD_REQUEST, self.to_string()),
           AppError::NotFoundError(_) => (StatusCode::NOT_FOUND, self.to_string()),
-          AppError::DatabaseError(_) => (
+          AppError::DatabaseError(err) => (
               StatusCode::INTERNAL_SERVER_ERROR,
-              "A database error occurred".to_string(),
+              format!("Database error: {}", err),
           ),
           AppError::ConfigError(_) => (
               StatusCode::INTERNAL_SERVER_ERROR,
               "A configuration error occurred".to_string(),
           ),
-          AppError::InternalError(_) => (
+          AppError::InternalError(err) => (
               StatusCode::INTERNAL_SERVER_ERROR,
-              "An internal server error occurred".to_string(),
+              format!("An internal server error occurred: {}", err),
           ),
       };
 

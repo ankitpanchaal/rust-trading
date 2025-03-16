@@ -1,5 +1,5 @@
 use axum::{
-  extract::State,
+  extract::{Extension, State},
   http::StatusCode,
   Json,
 };
@@ -38,7 +38,7 @@ pub async fn refresh_token(
 
 pub async fn me(
   State(service): State<AuthService>,
-  user_id: String,
+  Extension(user_id): Extension<String>,
 ) -> Result<Json<UserResponse>, AppError> {
   let user = service.get_user_by_id(&user_id).await?;
   Ok(Json(user))

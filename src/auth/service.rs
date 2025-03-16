@@ -84,6 +84,7 @@ impl AuthService {
     }
 
     pub async fn get_user_by_id(&self, id: &str) -> Result<UserResponse, AppError> {
+        println!("ID: {}", id);
         // Convert string ID to ObjectId
         let object_id = ObjectId::parse_str(id)
             .map_err(|_| AppError::ValidationError("Invalid user ID format".into()))?;
