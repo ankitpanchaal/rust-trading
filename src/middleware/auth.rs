@@ -48,25 +48,3 @@ fn extract_token_from_request(req: &Request<Body>) -> Result<String, AppError> {
   
   Ok(token)
 }
-
-pub async fn extract_user_id(
-  mut req: Request<Body>,
-  next: Next,
-) -> Result<Response, (StatusCode, String)> {
-  // Get user ID from request extensions (set by auth_middleware)
-  let user_id = req
-      .extensions()
-      .get::<String>()
-      .cloned()
-      .ok_or_else(|| {
-          (
-              StatusCode::INTERNAL_SERVER_ERROR,
-              "User ID not found in request".to_string(),
-          )
-      })?;
-  
-  // Add user ID to request extensions for handlers to use
-  req.extensions_mut().insert(user_id);
-  
-  Ok(next.run(req).await)
-}
