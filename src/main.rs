@@ -8,6 +8,7 @@ mod auth;
 mod market;
 mod paper_trading;
 mod strategies;
+mod telegram;
 mod config;
 mod db;
 mod error;

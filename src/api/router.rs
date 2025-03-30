@@ -21,6 +21,7 @@ use crate::{
     service::PaperTradingService
   },
   strategies::routes::strategy_routes,
+  telegram::routes::telegram_routes,
 };
 
 pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
@@ -50,7 +51,8 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
       .nest("/auth", auth_routes(auth_service))
       .nest("/market", market_routes())
       .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()))
-      .nest("/st", strategy_routes(db.clone(), paper_trading_service.clone(), market_service.clone(), config.clone()));
+      .nest("/st", strategy_routes(db.clone(), paper_trading_service.clone(), market_service.clone(), config.clone()))
+      .nest("/telegram", telegram_routes()?);  // Added the ? operator here
   
   // Build the router
   let app = Router::new()

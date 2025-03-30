@@ -41,6 +41,7 @@ tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 uuid = { version = "1.7.0", features = ["v4", "serde"] }
 validator = { version = "0.16.1", features = ["derive"] }
+teloxide = { version = "0.12", features = ["macros"] }
 
 kucoin_rs = "0.4.4"
 
