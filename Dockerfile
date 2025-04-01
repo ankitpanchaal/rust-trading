@@ -14,10 +14,15 @@ COPY src ./src
 RUN cargo build --release
 
 # Use a minimal base image for the final container
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 # Set the working directory inside the container
 WORKDIR /app
+
+# Install runtime dependencies (libssl3 provides libssl.so.3)
+RUN apt-get update && \
+    apt-get install -y libssl3 && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy the compiled binary from the builder stage
 COPY --from=builder /app/target/release/my-api-service .
