@@ -1,6 +1,5 @@
 use mongodb::{
-  bson::{self, doc, oid::ObjectId, Document},
-  options::FindOneOptions,
+  bson::{self, doc, oid::ObjectId},
 };
 
 use crate::{db::MongoDb, error::AppError};
