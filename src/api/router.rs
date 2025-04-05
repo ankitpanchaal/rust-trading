@@ -49,11 +49,11 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
   // Setup routes
   let api_routes = Router::new()
       .route("/health", get(health_check))
-      .nest("/auth", auth_routes(auth_service))
+      .nest("/auth", auth_routes(auth_service.clone()))
       .nest("/market", market_routes())
       .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()))
       .nest("/st", strategy_routes(db.clone(), paper_trading_service.clone(), market_service.clone(), config.clone()))
-      .nest("/telegram", telegram_routes()?)
+      .nest("/telegram", telegram_routes(db.clone(), auth_service.clone(), config.clone())?)
       .nest("/binance", binance_routes()?);
   
   // Build the router

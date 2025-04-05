@@ -123,4 +123,33 @@ impl AuthService {
             user: user.into(),
         })
     }
+
+    pub async fn store_telegram_token(&self, user_id: &str, token: &str) -> Result<(), AppError> {
+        // Set expiration to 15 minutes from now
+        let expiration = chrono::Utc::now() + chrono::Duration::minutes(15);
+        
+        // Store token in database with user_id and expiration
+        self.repository.store_telegram_token(user_id, token, expiration).await
+    }
+    
+    pub async fn validate_telegram_token(&self, token: &str) -> Result<String, AppError> {
+        // Look up token in database and verify it's still valid
+        let result = self.repository.get_telegram_token(token).await?;
+        
+        match result {
+            Some((user_id, expiration)) => {
+                // Check if token is expired
+                if expiration < chrono::Utc::now() {
+                    return Err(AppError::AuthError("Token expired".into()));
+                }
+                
+                // Delete the used token
+                self.repository.delete_telegram_token(token).await?;
+                
+                // Return the user_id associated with this token
+                Ok(user_id)
+            },
+            None => Err(AppError::AuthError("Invalid token".into())),
+        }
+    }
 }
