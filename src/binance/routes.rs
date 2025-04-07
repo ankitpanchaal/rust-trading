@@ -20,7 +20,7 @@ pub fn binance_routes() -> Result<Router, AppError> {
     let secret_key = env::var("BINANCE_SECRET_KEY")
         .map_err(|_| AppError::ConfigError("BINANCE_SECRET_KEY is not set".into()))?;
 
-    // Initialize user service with API keys
+    // // Initialize user service with API keys
     let user_service = BinanceUserService::new(api_key, secret_key);
 
     // Public market data routes (no auth required)
@@ -30,6 +30,7 @@ pub fn binance_routes() -> Result<Router, AppError> {
         .route("/ticker/:symbol", get(handler::get_book_ticker))
         .route("/stats/:symbol", get(handler::get_24h_stats))
         .route("/depth/:symbol", get(handler::get_depth))
+        .route("/klines/:symbol", get(handler::get_klines))
         .with_state(market_service);
 
     // User account routes (auth required)

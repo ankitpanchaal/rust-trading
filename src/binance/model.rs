@@ -80,3 +80,16 @@ pub enum OrderType {
 pub struct ErrorResponse {
     pub error: String,
 }
+
+// Update the KlineRequest struct to ensure it has appropriate defaults
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct KlineRequest {
+    pub interval: String,
+    #[serde(default)]
+    pub limit: Option<usize>,
+    #[serde(default)]
+    pub start_time: Option<u64>,
+    #[serde(default)]
+    pub end_time: Option<u64>,
+}
