@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Dynamic branch name (default to 'telegram-bot' if not provided)
-BRANCH_NAME=${1:-telegram-bot}
+# Dynamic branch name (default to 'staging' if not provided)
+BRANCH_NAME=${1:-staging}
 
 # Switch to the specified branch
 echo "Switching to branch: $BRANCH_NAME"
