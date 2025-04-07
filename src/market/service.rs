@@ -1,7 +1,7 @@
 use crate::error::AppError;
 use kucoin_rs::{kucoin::client::Kucoin, kucoin::client::KucoinEnv};
 use std::{sync::Arc, collections::HashMap};
-use tokio::sync::{broadcast, mpsc, RwLock};
+use tokio::sync::{broadcast, RwLock};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

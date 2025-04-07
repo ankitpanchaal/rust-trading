@@ -6,7 +6,7 @@ use crate::auth::model::User;
 use crate::error::AppError;
 use crate::market::service::MarketService;
 use crate::paper_trading::model::{
-    CreateOrderRequest, Order, OrderResponse, OrderSide, OrderStatus, OrderType, Position,
+    CreateOrderRequest, Order, OrderResponse, OrderSide, OrderStatus, Position,
     PositionResponse, TradingStatsResponse,
 };
 use crate::paper_trading::repository::PaperTradingRepository;

@@ -1,4 +1,3 @@
-use mongodb::bson::DateTime as BsonDateTime;
 use mongodb::bson::doc;
 use chrono::{DateTime, Utc};
 use mongodb::bson::{self, oid::ObjectId, Document};

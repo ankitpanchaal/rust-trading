@@ -14,6 +14,7 @@ mod db;
 mod error;
 mod middleware;
 mod utils;
+mod binance;
 
 use crate::strategies::repository::StrategyRepository;
 use crate::strategies::service::StrategyService;
