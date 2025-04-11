@@ -20,7 +20,6 @@ use crate::{
     repository::PaperTradingRepository,
     service::PaperTradingService
   },
-  strategies::routes::strategy_routes,
   telegram::routes::telegram_routes,
   binance::routes::binance_routes,
 };
@@ -52,7 +51,6 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
       .nest("/auth", auth_routes(auth_service.clone()))
       .nest("/market", market_routes())
       .nest("/trading", paper_trading_routes(db.clone(), market_service.clone(), config.clone()))
-      .nest("/st", strategy_routes(db.clone(), paper_trading_service.clone(), market_service.clone(), config.clone()))
       .nest("/telegram", telegram_routes(db.clone(), auth_service.clone(), config.clone())?)
       .nest("/binance", binance_routes()?);
   
