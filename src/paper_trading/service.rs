@@ -6,22 +6,29 @@ use crate::auth::model::User;
 use crate::error::AppError;
 use crate::market::service::MarketService;
 use crate::paper_trading::model::{
-    CreateOrderRequest, Order, OrderResponse, OrderSide, OrderStatus, Position,
-    PositionResponse, TradingStatsResponse,
+    CreateOrderRequest, Order, OrderResponse, OrderSide, OrderStatus, Position, PositionResponse,
+    TradingStatsResponse,
 };
 use crate::paper_trading::repository::PaperTradingRepository;
+use crate::telegram::message_service::TelegramMessageService;
 
 #[derive(Clone)]
 pub struct PaperTradingService {
     repository: PaperTradingRepository,
     market_service: MarketService,
+    message_service: TelegramMessageService,
 }
 
 impl PaperTradingService {
-    pub fn new(repository: PaperTradingRepository, market_service: MarketService) -> Self {
+    pub fn new(
+        repository: PaperTradingRepository,
+        market_service: MarketService,
+        message_service: TelegramMessageService,
+    ) -> Self {
         Self {
             repository,
             market_service,
+            message_service,
         }
     }
 
@@ -84,11 +91,13 @@ impl PaperTradingService {
                         "Insufficient balance for this order".to_string(),
                     ));
                 }
-                
+
                 // Update user balance
                 let new_balance = user_balance - order_cost;
-                self.repository.update_user_balance(user_id_obj, new_balance).await?;
-                
+                self.repository
+                    .update_user_balance(user_id_obj, new_balance)
+                    .await?;
+
                 // Create or update position
                 let position = self.update_position_for_buy_order(&order, price).await?;
                 order.position_id = position.id;
@@ -99,57 +108,85 @@ impl PaperTradingService {
                     .repository
                     .get_position_by_user_and_symbol(&user_id_obj, &req.symbol)
                     .await?;
-                
+
                 let position = match position_opt {
                     Some(pos) => {
                         if pos.quantity < req.quantity {
-                            return Err(AppError::ValidationError(
-                                format!("Insufficient quantity to sell: have {}, requested {}", 
-                                    pos.quantity, req.quantity)
-                            ));
+                            return Err(AppError::ValidationError(format!(
+                                "Insufficient quantity to sell: have {}, requested {}",
+                                pos.quantity, req.quantity
+                            )));
                         }
                         pos
                     }
                     None => {
-                        return Err(AppError::ValidationError(
-                            format!("No position found for symbol {}", req.symbol)
-                        ));
+                        return Err(AppError::ValidationError(format!(
+                            "No position found for symbol {}",
+                            req.symbol
+                        )));
                     }
                 };
-                
+
                 // Update user balance
                 let new_balance = user_balance + order_cost;
-                self.repository.update_user_balance(user_id_obj, new_balance).await?;
-                
+                self.repository
+                    .update_user_balance(user_id_obj, new_balance)
+                    .await?;
+
                 // Update position
-                let updated_position = self.update_position_for_sell_order(&order, &position, price).await?;
+                let updated_position = self
+                    .update_position_for_sell_order(&order, &position, price)
+                    .await?;
                 order.position_id = updated_position.map(|p| p.id).flatten();
             }
         }
-        
+
         // Save order
         let created_order = self.repository.create_order(order).await?;
-        
+
+        // Send notification to the user about the order
+        let notification_message = match created_order.side {
+            OrderSide::Buy => format!(
+                "🟢 Buy Order Executed:\nSymbol: {}\nQuantity: {}\nPrice: ${:.2}\nTotal: ${:.2}",
+                created_order.symbol, created_order.quantity, price, order_cost
+            ),
+            OrderSide::Sell => format!(
+                "🔴 Sell Order Executed:\nSymbol: {}\nQuantity: {}\nPrice: ${:.2}\nTotal: ${:.2}",
+                created_order.symbol, created_order.quantity, price, order_cost
+            ),
+        };
+
+        // Send notification (don't return error if notification fails)
+        let _ = self
+            .message_service
+            .send_notification(user_id, &notification_message)
+            .await;
+
         Ok(OrderResponse::from(created_order))
     }
 
     // Helper method to update position for buy orders
-    async fn update_position_for_buy_order(&self, order: &Order, price: f64) -> Result<Position, AppError> {
+    async fn update_position_for_buy_order(
+        &self,
+        order: &Order,
+        price: f64,
+    ) -> Result<Position, AppError> {
         let position_opt = self
             .repository
             .get_position_by_user_and_symbol(&order.user_id, &order.symbol)
             .await?;
-            
+
         match position_opt {
             Some(mut position) => {
                 // Update existing position
                 let total_quantity = position.quantity + order.quantity;
-                let total_cost = (position.quantity * position.entry_price) + (order.quantity * price);
+                let total_cost =
+                    (position.quantity * position.entry_price) + (order.quantity * price);
                 position.entry_price = total_cost / total_quantity;
                 position.quantity = total_quantity;
                 position.current_price = price;
                 position.updated_at = Utc::now();
-                
+
                 self.repository.update_position(&position).await?;
                 Ok(position)
             }
@@ -168,27 +205,29 @@ impl PaperTradingService {
                     opened_at: Utc::now(),
                     updated_at: Utc::now(),
                 };
-                
+
                 self.repository.create_position(new_position).await
             }
         }
     }
-    
+
     // Helper method to update position for sell orders
     async fn update_position_for_sell_order(
-        &self, 
-        order: &Order, 
-        position: &Position, 
-        price: f64
+        &self,
+        order: &Order,
+        position: &Position,
+        price: f64,
     ) -> Result<Option<Position>, AppError> {
         let realized_pnl = (price - position.entry_price) * order.quantity;
-        
+
         if position.quantity == order.quantity {
             // Close position completely
             if let Some(position_id) = &position.id {
                 self.repository.delete_position(position_id).await?;
             } else {
-                return Err(AppError::ValidationError("Position ID not found".to_string()));
+                return Err(AppError::ValidationError(
+                    "Position ID not found".to_string(),
+                ));
             }
             return Ok(None);
         } else {
@@ -197,7 +236,7 @@ impl PaperTradingService {
             updated_position.quantity -= order.quantity;
             updated_position.realized_pnl += realized_pnl;
             updated_position.updated_at = Utc::now();
-            
+
             self.repository.update_position(&updated_position).await?;
             return Ok(Some(updated_position));
         }
@@ -206,29 +245,32 @@ impl PaperTradingService {
     // Position management
     pub async fn get_positions(&self, user_id: &str) -> Result<Vec<PositionResponse>, AppError> {
         let positions = self.repository.get_positions_by_user_id(user_id).await?;
-        
+
         // Update current prices and unrealized PnL
         let mut position_responses = Vec::new();
-        
+
         for mut position in positions {
             // Get current price
-            let (price_str, _) = self.market_service.get_ticker_price(&position.symbol).await?;
+            let (price_str, _) = self
+                .market_service
+                .get_ticker_price(&position.symbol)
+                .await?;
             let price = price_str.parse::<f64>().map_err(|_| {
                 AppError::InternalError(format!("Failed to parse price: {}", price_str))
             })?;
-            
+
             // Update position price and PnL
             position.current_price = price;
             position.unrealized_pnl = (price - position.entry_price) * position.quantity;
-            
+
             // Save updates to database
             if let Some(_) = position.id {
                 self.repository.update_position(&position).await?;
             }
-            
+
             position_responses.push(PositionResponse::from(position));
         }
-    
+
         Ok(position_responses)
     }
 
@@ -239,7 +281,10 @@ impl PaperTradingService {
     }
 
     // Get balance information
-    pub async fn get_user_balance_details(&self, user_id: &str) -> Result<serde_json::Value, AppError> {
+    pub async fn get_user_balance_details(
+        &self,
+        user_id: &str,
+    ) -> Result<serde_json::Value, AppError> {
         // Get user balance
         let balance = self.repository.get_user_balance(user_id).await?;
 
@@ -261,14 +306,17 @@ impl PaperTradingService {
         let mut unrealized_pnl = 0.0;
 
         for position in positions {
-            let (price_str, _) = self.market_service.get_ticker_price(&position.symbol).await?;
+            let (price_str, _) = self
+                .market_service
+                .get_ticker_price(&position.symbol)
+                .await?;
             let current_price = price_str.parse::<f64>().map_err(|_| {
                 AppError::InternalError(format!("Failed to parse price: {}", price_str))
             })?;
-            
+
             let position_value = position.quantity * current_price;
             let position_pnl = (current_price - position.entry_price) * position.quantity;
-            
+
             total_position_value += position_value;
             unrealized_pnl += position_pnl;
         }
@@ -292,7 +340,7 @@ impl PaperTradingService {
     pub async fn get_trading_stats(&self, user_id: &str) -> Result<TradingStatsResponse, AppError> {
         // Get user balance and positions
         let user_balance = self.repository.get_user_balance(user_id).await?;
-        
+
         // Get user for initial balance
         let user_id_obj = ObjectId::from_str(user_id)
             .map_err(|_| AppError::ValidationError("Invalid user ID".to_string()))?;
@@ -310,11 +358,14 @@ impl PaperTradingService {
         let mut unrealized_pnl = 0.0;
 
         for position in positions {
-            let (price_str, _) = self.market_service.get_ticker_price(&position.symbol).await?;
+            let (price_str, _) = self
+                .market_service
+                .get_ticker_price(&position.symbol)
+                .await?;
             let current_price = price_str.parse::<f64>().map_err(|_| {
                 AppError::InternalError(format!("Failed to parse price: {}", price_str))
             })?;
-            
+
             unrealized_pnl += (current_price - position.entry_price) * position.quantity;
         }
 

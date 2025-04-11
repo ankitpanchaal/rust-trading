@@ -33,17 +33,7 @@ async fn main() -> anyhow::Result<()> {
     let db = db::mongodb::connect(&config.mongodb_uri, &config.mongodb_name).await?;
     info!("Connected to MongoDB");
     
-    // Create services
-    let market_service = market::service::MarketService::new();
-    let paper_trading_repository = paper_trading::repository::PaperTradingRepository::new(
-        db.clone(), 
-        market_service.clone()
-    );
-    let paper_trading_service = paper_trading::service::PaperTradingService::new(
-        paper_trading_repository, 
-        market_service.clone()
-    );
-    
+
     // Build our application with routes
     let app = api::router::create_router(db).await?;
     

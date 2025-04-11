@@ -10,11 +10,16 @@ use crate::{
     middleware::auth::auth_middleware,
     paper_trading::{handler, repository::PaperTradingRepository, service::PaperTradingService},
     config::Config,
+    telegram::message_service::TelegramMessageService,
+    telegram::repository::TelegramRepository
 };
 
 pub fn paper_trading_routes(db: MongoDb, market_service: MarketService, config: Config) -> Router {
-    let repository = PaperTradingRepository::new(db, market_service.clone());
-    let service = PaperTradingService::new(repository, market_service);
+    let repository = PaperTradingRepository::new(db.clone(), market_service.clone());
+    let tg_repo = TelegramRepository::new(db);
+    let tg_message_service = TelegramMessageService::new(tg_repo)
+        .expect("Failed to create TelegramMessageService");
+    let service = PaperTradingService::new(repository, market_service, tg_message_service);
     let auth_config = config.clone();
 
     Router::new()

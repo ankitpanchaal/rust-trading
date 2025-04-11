@@ -20,7 +20,11 @@ use crate::{
     repository::PaperTradingRepository,
     service::PaperTradingService
   },
-  telegram::routes::telegram_routes,
+  telegram::{
+    routes::telegram_routes,
+    repository::TelegramRepository,
+    message_service::TelegramMessageService
+  },
   binance::routes::binance_routes,
 };
 
@@ -43,7 +47,17 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
   
   // Create paper trading repository and service
   let paper_trading_repository = PaperTradingRepository::new(db.clone(), market_service.clone());
-  let paper_trading_service = PaperTradingService::new(paper_trading_repository, market_service.clone());
+  
+  // Create telegram message service
+  let telegram_repository = TelegramRepository::new(db.clone());
+  let telegram_message_service = TelegramMessageService::new(telegram_repository)
+      .expect("Failed to create TelegramMessageService");
+  
+  let paper_trading_service = PaperTradingService::new(
+      paper_trading_repository, 
+      market_service.clone(),
+      telegram_message_service
+  );
   
   // Setup routes
   let api_routes = Router::new()
