@@ -78,49 +78,51 @@ impl TelegramService {
             Ok(Some(user_id)) => {
                 // Get user's paper trading positions
                 let positions = self.repository.get_user_positions(&user_id).await?;
+            
+            // Get user's balance
+            let balance = self.repository.get_user_balance(&user_id).await?;
+            
+            // Format the message with positions and stats
+            let mut message = format!("📊 *Account Summary*\n\nBalance: ${:.2}", balance);
+            
+            if positions.is_empty() {
+                message.push_str("\n\nYou don't have any open positions.");
+            } else {
+                message.push_str("\n\n*Open Positions:*\n");
                 
-                // Get user's balance
-                let balance = self.repository.get_user_balance(&user_id).await?;
+                let mut total_value = 0.0;
                 
-                // Format the message with positions and stats
-                let mut message = format!("📊 *Account Summary*\n\nBalance: ${:.2}", balance);
-                
-                if positions.is_empty() {
-                    message.push_str("\n\nYou don't have any open positions.");
-                } else {
-                    message.push_str("\n\n*Open Positions:*\n");
+                for position in &positions {
+                    let position_value = position.quantity * position.current_price;
+                    total_value += position_value;
                     
-                    let mut total_value = 0.0;
+                    let pnl = position_value - (position.quantity * position.entry_price);
+                    let pnl_percentage = (pnl / (position.quantity * position.entry_price)) * 100.0;
                     
-                    for position in &positions {
-                        let position_value = position.quantity * position.current_price;
-                        total_value += position_value;
-                        
-                        let pnl = position_value - (position.quantity * position.entry_price);
-                        let pnl_percentage = (pnl / (position.quantity * position.entry_price)) * 100.0;
-                        
-                        
-                        message.push_str(&format!(
-                            "\n🔹 *{}*: {:.4} @ ${:.2}\n   Value: ${:.2} | P&L: ${:.2} ({:.2}%)",
-                            position.symbol,
-                            position.quantity,
-                            position.current_price,
-                            position_value,
-                            pnl,
-                            pnl_percentage
-                        ));
-                    }
-                    
-                    message.push_str(&format!("\n\n*Total Portfolio Value:* ${:.2}", balance + total_value));
+                    message.push_str(&format!(
+                        "\n🔹 *{}*: {:.4} @ ${:.2}\n   Value: ${:.2} | P&L: ${:.2} ({:.2}%)",
+                        escape_markdown(&position.symbol),
+                        position.quantity,
+                        position.current_price,
+                        position_value,
+                        pnl,
+                        pnl_percentage
+                    ));
                 }
                 
-                // Send the message
-                self.bot.send_message(ChatId(chat_id), message)
-                    .parse_mode(teloxide::types::ParseMode::MarkdownV2)
-                    .await
-                    .map_err(|e| AppError::InternalError(format!("Failed to send positions data: {}", e)))?;
-                
-                Ok(())
+                message.push_str(&format!("\n\n*Total Portfolio Value:* ${:.2}", balance + total_value));
+            }
+            
+            // Escape the entire message for MarkdownV2
+            let escaped_message = escape_markdown(&message);
+            
+            // Send the message
+            self.bot.send_message(ChatId(chat_id), escaped_message)
+                .parse_mode(teloxide::types::ParseMode::MarkdownV2)
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send positions data: {}", e)))?;
+            
+            Ok(())
             },
             Ok(None) => {
                 // No user associated with this chat ID
@@ -242,4 +244,25 @@ impl TelegramService {
         
         Ok(token)
     }
+}
+
+fn escape_markdown(text: &str) -> String {
+    let special_chars = &[
+        '_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', 
+        '-', '=', '|', '{', '}', '.', '!'
+    ];
+    
+    let mut result = String::with_capacity(text.len() * 2);
+    
+    for c in text.chars() {
+        if special_chars.contains(&c) || c == '\\' {
+            result.push('\\');
+        }
+        result.push(c);
+    }
+    
+    // Additionally handle '$' separately since it's used in currency formatting
+    result = result.replace("$", "\\$");
+    
+    result
 }
