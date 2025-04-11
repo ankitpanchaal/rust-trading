@@ -14,11 +14,11 @@ use uuid::Uuid;
 pub struct TelegramService {
     bot: Bot,
     repository: TelegramRepository,
-    auth_service: Option<AuthService>,
+    auth_service: AuthService,
 }
 
 impl TelegramService {
-    pub fn new(repository: TelegramRepository, auth_service: Option<AuthService>) -> Result<Self, AppError> {
+    pub fn new(repository: TelegramRepository, auth_service: AuthService) -> Result<Self, AppError> {
         let token = env::var("TELEGRAM_BOT_TOKEN")
             .map_err(|_| AppError::ConfigError("TELEGRAM_BOT_TOKEN is not set".into()))?;
         
@@ -78,61 +78,42 @@ impl TelegramService {
     
     async fn handle_deep_link(&self, token: String, chat_id: i64, username: Option<String>) -> Result<(), AppError> {
         // Validate the token and get associated user
-        match self.auth_service.as_ref() {
-            Some(auth_service) => {
-                match auth_service.validate_telegram_token(&token).await {
-                    Ok(user_id) => {
-                        // Associate the chat_id with the user_id
-                        self.repository.associate_user(&user_id, chat_id, username).await?;
-                        
-                        // Confirm successful connection
-                        self.bot.send_message(
-                            ChatId(chat_id), 
-                            "Your Telegram account is now connected to your trading account! You will receive notifications here."
-                        )
-                        .await
-                        .map_err(|e| AppError::InternalError(format!("Failed to send confirmation: {}", e)))?;
-                        
-                        Ok(())
-                    },
-                    Err(_) => {
-                        // Invalid or expired token
-                        self.bot.send_message(
-                            ChatId(chat_id), 
-                            "Invalid or expired connection token. Please generate a new link from the website."
-                        )
-                        .await
-                        .map_err(|e| AppError::InternalError(format!("Failed to send error message: {}", e)))?;
-                        
-                        Err(AppError::AuthError("Invalid Telegram connection token".into()))
-                    }
-                }
-            },
-            None => {
-                // Auth service not available
+        match self.auth_service.validate_telegram_token(&token).await {
+            Ok(user_id) => {
+                // Associate the chat_id with the user_id
+                self.repository.associate_user(&user_id, chat_id, username).await?;
+                
+                // Confirm successful connection
                 self.bot.send_message(
                     ChatId(chat_id), 
-                    "Account linking is currently unavailable. Please try again later."
+                    "Your Telegram account is now connected to your trading account! You will receive notifications here."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send confirmation: {}", e)))?;
+                
+                Ok(())
+            },
+            Err(_) => {
+                // Invalid or expired token
+                self.bot.send_message(
+                    ChatId(chat_id), 
+                    "Invalid or expired connection token. Please generate a new link from the website."
                 )
                 .await
                 .map_err(|e| AppError::InternalError(format!("Failed to send error message: {}", e)))?;
                 
-                Err(AppError::ConfigError("Auth service not configured for Telegram integration".into()))
+                Err(AppError::AuthError("Invalid Telegram connection token".into()))
             }
         }
     }
     
     // Generate a new connection token for a user
     pub async fn generate_connection_token(&self, user_id: &str) -> Result<String, AppError> {
-        // Check if auth service is available
-        let auth_service = self.auth_service.as_ref()
-            .ok_or_else(|| AppError::ConfigError("Auth service not configured for Telegram integration".into()))?;
-        
         // Generate a unique token
         let token = Uuid::new_v4().to_string();
         
         // Store token with user ID (delegated to auth service)
-        auth_service.store_telegram_token(user_id, &token).await?;
+        self.auth_service.store_telegram_token(user_id, &token).await?;
         
         Ok(token)
     }
