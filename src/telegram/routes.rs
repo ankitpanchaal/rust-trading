@@ -23,11 +23,12 @@ pub fn telegram_routes(
     Ok(Router::new()
         .route("/send", post(handler::send_message))
         .route("/webhook", post(handler::webhook))
-        .nest(
-            "/",
-            Router::new()
-                .route("/token", get(handler::generate_token))
-                .layer(middleware::from_fn_with_state(config, auth_middleware)),
+        .route(
+            "/token",
+            get(handler::generate_token).route_layer(middleware::from_fn_with_state(
+                config,
+                auth_middleware,
+            )),
         )
         .with_state(service))
 }

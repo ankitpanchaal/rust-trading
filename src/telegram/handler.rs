@@ -1,4 +1,4 @@
-use axum::{extract::State, http::StatusCode, Json};
+use axum::{extract::{State, Extension}, http::StatusCode, Json};
 use validator::Validate;
 
 use crate::{
@@ -53,7 +53,7 @@ pub async fn webhook(
 // Generate a connection token for a user
 pub async fn generate_token(
   State(service): State<TelegramService>,
-  user_id: String, // This would typically come from an authenticated session
+  Extension(user_id): Extension<String>,
 ) -> Result<Json<serde_json::Value>, (StatusCode, Json<serde_json::Value>)> {
   match service.generate_connection_token(&user_id).await {
       Ok(token) => {
