@@ -40,19 +40,6 @@ impl TelegramService {
         Ok(())
     }
     
-    // New method to send message by user ID
-    pub async fn send_message_to_user(&self, user_id: &str, message: &str) -> Result<(), AppError> {
-        if let Some(chat_id) = self.repository.get_chat_id_by_user_id(user_id).await? {
-            let chat_id = ChatId(chat_id);
-            self.bot.send_message(chat_id, message)
-                .await
-                .map_err(|e: RequestError| AppError::InternalError(format!("Failed to send Telegram message: {}", e)))?;
-            Ok(())
-        } else {
-            Err(AppError::NotFoundError("No Telegram chat ID found for this user".into()))
-        }
-    }
-    
     pub async fn process_update(&self, update: TelegramUpdate) -> Result<(), AppError> {
         if let Some(message) = update.message {
             if let Some(text) = message.text {
@@ -68,12 +55,86 @@ impl TelegramService {
                     )
                     .await
                     .map_err(|e| AppError::InternalError(format!("Failed to send message: {}", e)))?;
+                } else if text.starts_with("/enable") {
+                    // Enable paper trading for the user
+                    self.handle_enable_command(message.chat.id).await?;
+                } else if text.starts_with("/disable") {
+                    // Disable paper trading for the user
+                    self.handle_disable_command(message.chat.id).await?;
+                } else if text.starts_with("/positions") || text.starts_with("/stats") {
+                    // Get user's positions and stats
+                    self.handle_positions_command(message.chat.id).await?;
                 }
                 // Add other command handlers as needed
             }
         }
         
         Ok(())
+    }
+
+    async fn handle_positions_command(&self, chat_id: i64) -> Result<(), AppError> {
+        // Get user_id associated with this chat_id
+        match self.repository.get_user_id_by_chat_id(chat_id).await {
+            Ok(Some(user_id)) => {
+                // Get user's paper trading positions
+                let positions = self.repository.get_user_positions(&user_id).await?;
+                
+                // Get user's balance
+                let balance = self.repository.get_user_balance(&user_id).await?;
+                
+                // Format the message with positions and stats
+                let mut message = format!("📊 *Account Summary*\n\nBalance: ${:.2}", balance);
+                
+                if positions.is_empty() {
+                    message.push_str("\n\nYou don't have any open positions.");
+                } else {
+                    message.push_str("\n\n*Open Positions:*\n");
+                    
+                    let mut total_value = 0.0;
+                    
+                    for position in &positions {
+                        let position_value = position.quantity * position.current_price;
+                        total_value += position_value;
+                        
+                        let pnl = position_value - (position.quantity * position.entry_price);
+                        let pnl_percentage = (pnl / (position.quantity * position.entry_price)) * 100.0;
+                        
+                        
+                        message.push_str(&format!(
+                            "\n🔹 *{}*: {:.4} @ ${:.2}\n   Value: ${:.2} | P&L: ${:.2} ({:.2}%)",
+                            position.symbol,
+                            position.quantity,
+                            position.current_price,
+                            position_value,
+                            pnl,
+                            pnl_percentage
+                        ));
+                    }
+                    
+                    message.push_str(&format!("\n\n*Total Portfolio Value:* ${:.2}", balance + total_value));
+                }
+                
+                // Send the message
+                self.bot.send_message(ChatId(chat_id), message)
+                    .parse_mode(teloxide::types::ParseMode::MarkdownV2)
+                    .await
+                    .map_err(|e| AppError::InternalError(format!("Failed to send positions data: {}", e)))?;
+                
+                Ok(())
+            },
+            Ok(None) => {
+                // No user associated with this chat ID
+                self.bot.send_message(
+                    ChatId(chat_id),
+                    "Your Telegram account is not connected to any user. Please connect your account first."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send message: {}", e)))?;
+                
+                Ok(())
+            },
+            Err(e) => Err(e)
+        }
     }
     
     async fn handle_deep_link(&self, token: String, chat_id: i64, username: Option<String>) -> Result<(), AppError> {
@@ -104,6 +165,70 @@ impl TelegramService {
                 
                 Err(AppError::AuthError("Invalid Telegram connection token".into()))
             }
+        }
+    }
+
+    async fn handle_enable_command(&self, chat_id: i64) -> Result<(), AppError> {
+        // Get user_id associated with this chat_id
+        match self.repository.get_user_id_by_chat_id(chat_id).await {
+            Ok(Some(user_id)) => {
+                // Update user's paper trading status in the database
+                self.repository.update_paper_trading_status(&user_id, true).await?;
+                
+                // Send confirmation message
+                self.bot.send_message(
+                    ChatId(chat_id),
+                    "Paper trading has been enabled for your account."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send confirmation: {}", e)))?;
+                
+                Ok(())
+            },
+            Ok(None) => {
+                // No user associated with this chat ID
+                self.bot.send_message(
+                    ChatId(chat_id),
+                    "Your Telegram account is not connected to any user. Please connect your account first."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send message: {}", e)))?;
+                
+                Ok(())
+            },
+            Err(e) => Err(e)
+        }
+    }
+    
+    async fn handle_disable_command(&self, chat_id: i64) -> Result<(), AppError> {
+        // Get user_id associated with this chat_id
+        match self.repository.get_user_id_by_chat_id(chat_id).await {
+            Ok(Some(user_id)) => {
+                // Update user's paper trading status in the database
+                self.repository.update_paper_trading_status(&user_id, false).await?;
+                
+                // Send confirmation message
+                self.bot.send_message(
+                    ChatId(chat_id),
+                    "Paper trading has been disabled for your account."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send confirmation: {}", e)))?;
+                
+                Ok(())
+            },
+            Ok(None) => {
+                // No user associated with this chat ID
+                self.bot.send_message(
+                    ChatId(chat_id),
+                    "Your Telegram account is not connected to any user. Please connect your account first."
+                )
+                .await
+                .map_err(|e| AppError::InternalError(format!("Failed to send message: {}", e)))?;
+                
+                Ok(())
+            },
+            Err(e) => Err(e)
         }
     }
     
