@@ -1,5 +1,5 @@
 # Use the official Rust image as the base image
-FROM rust:1.82.0 as builder
+FROM rust:1.82.0 AS builder
 
 # Set the working directory inside the container
 WORKDIR /app
