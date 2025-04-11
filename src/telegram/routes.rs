@@ -18,7 +18,7 @@ pub fn telegram_routes(
     config: Config,
 ) -> Result<Router, AppError> {
     let repository = TelegramRepository::new(db);
-    let service = TelegramService::new(repository, auth_service)?;
+    let service = TelegramService::new(repository, Some(auth_service))?;
 
     Ok(Router::new()
         .route("/send", post(handler::send_message))
