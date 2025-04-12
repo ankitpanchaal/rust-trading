@@ -1,39 +1,38 @@
 use axum::{
     middleware,
-    routing::{get, post },
+    routing::{get, post},
     Router,
 };
 
 use crate::{
+    binance::market_service::BinanceMarketService,
+    config::Config,
     db::MongoDb,
-    market::service::MarketService,
     middleware::auth::auth_middleware,
     paper_trading::{handler, repository::PaperTradingRepository, service::PaperTradingService},
-    config::Config,
     telegram::message_service::TelegramMessageService,
-    telegram::repository::TelegramRepository
+    telegram::repository::TelegramRepository,
 };
 
-pub fn paper_trading_routes(db: MongoDb, market_service: MarketService, config: Config) -> Router {
+pub fn paper_trading_routes(db: MongoDb, market_service: BinanceMarketService, config: Config) -> Router {
     let repository = PaperTradingRepository::new(db.clone(), market_service.clone());
     let tg_repo = TelegramRepository::new(db);
-    let tg_message_service = TelegramMessageService::new(tg_repo)
-        .expect("Failed to create TelegramMessageService");
+    let tg_message_service =
+        TelegramMessageService::new(tg_repo).expect("Failed to create TelegramMessageService");
     let service = PaperTradingService::new(repository, market_service, tg_message_service);
     let auth_config = config.clone();
 
     Router::new()
         // Paper trading setup
         .route("/enable", post(handler::enable_paper_trading))
-        
         // Orders
         .route("/orders", post(handler::create_order))
         .route("/orders", get(handler::get_orders))
-        
         // Positions
         .route("/positions", get(handler::get_positions))
         // Account info
         .route("/balance", get(handler::get_balance))
-        .route("/stats", get(handler::get_trading_stats)).layer(middleware::from_fn_with_state(auth_config, auth_middleware))
+        .route("/stats", get(handler::get_trading_stats))
+        .layer(middleware::from_fn_with_state(auth_config, auth_middleware))
         .with_state(service)
 }

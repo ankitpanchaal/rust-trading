@@ -6,7 +6,7 @@ use crate::{
     auth::model::User,
     db::MongoDb,
     error::AppError,
-    market::service::MarketService,
+    binance::market_service::BinanceMarketService
 };
 
 use super::model::{Order, Position};
@@ -17,7 +17,7 @@ pub struct PaperTradingRepository {
 }
 
 impl PaperTradingRepository {
-    pub fn new(db: MongoDb, _market_service: MarketService) -> Self {
+    pub fn new(db: MongoDb, _market_service: BinanceMarketService) -> Self {
         Self { db }
     }
 

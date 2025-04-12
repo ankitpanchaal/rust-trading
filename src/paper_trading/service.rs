@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 use crate::auth::model::User;
 use crate::error::AppError;
-use crate::market::service::MarketService;
+use crate::binance::market_service::BinanceMarketService;
 use crate::paper_trading::model::{
     CreateOrderRequest, Order, OrderResponse, OrderSide, OrderStatus, Position, PositionResponse,
     TradingStatsResponse,
@@ -15,14 +15,14 @@ use crate::telegram::message_service::TelegramMessageService;
 #[derive(Clone)]
 pub struct PaperTradingService {
     repository: PaperTradingRepository,
-    market_service: MarketService,
+    market_service: BinanceMarketService,
     message_service: TelegramMessageService,
 }
 
 impl PaperTradingService {
     pub fn new(
         repository: PaperTradingRepository,
-        market_service: MarketService,
+        market_service: BinanceMarketService,
         message_service: TelegramMessageService,
     ) -> Self {
         Self {

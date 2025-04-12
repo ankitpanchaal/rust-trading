@@ -11,7 +11,6 @@ use crate::{
     config::Config,
     db::MongoDb,
     error::AppError,
-    market::{routes::market_routes, service::MarketService},
     paper_trading::{
         repository::PaperTradingRepository, routes::paper_trading_routes,
         service::PaperTradingService,
@@ -38,10 +37,9 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
 
     // Setup services
     let auth_service = AuthService::new(auth_repository, config.clone());
-    let market_service = MarketService::new();
     let binance_service = BinanceMarketService::new();
     // Create paper trading repository and service
-    let paper_trading_repository = PaperTradingRepository::new(db.clone(), market_service.clone());
+    let paper_trading_repository = PaperTradingRepository::new(db.clone(), binance_service.clone());
 
     // Create telegram message service
     let telegram_repository = TelegramRepository::new(db.clone());
@@ -50,7 +48,7 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
 
     let paper_trading_service = PaperTradingService::new(
         paper_trading_repository,
-        market_service.clone(),
+        binance_service.clone(),
         telegram_message_service,
     );
     let live_strategy_runner = LiveStrategyRunner::new(
@@ -66,7 +64,7 @@ pub async fn create_router(db: MongoDb) -> Result<Router, AppError> {
         .nest("/auth", auth_routes(auth_service.clone()))
         .nest(
             "/trading",
-            paper_trading_routes(db.clone(), market_service.clone(), config.clone()),
+            paper_trading_routes(db.clone(), binance_service.clone(), config.clone()),
         )
         .nest(
             "/telegram",

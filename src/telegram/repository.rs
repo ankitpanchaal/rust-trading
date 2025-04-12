@@ -128,7 +128,7 @@ impl TelegramRepository {
         // We'll create a PaperTradingRepository to access the positions
         let paper_trading_repo = PaperTradingRepository::new(
             self.db.clone(),
-            crate::market::service::MarketService::new(),
+            crate::binance::market_service::BinanceMarketService::new(),
         );
 
         paper_trading_repo.get_positions_by_user_id(user_id).await
@@ -138,7 +138,7 @@ impl TelegramRepository {
         // We'll create a PaperTradingRepository to access the balance
         let paper_trading_repo = PaperTradingRepository::new(
             self.db.clone(),
-            crate::market::service::MarketService::new(),
+            crate::binance::market_service::BinanceMarketService::new()
         );
 
         paper_trading_repo.get_user_balance(user_id).await

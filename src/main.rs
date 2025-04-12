@@ -4,7 +4,6 @@ use tracing_subscriber::FmtSubscriber;
 
 mod api;
 mod auth;
-mod market;
 mod paper_trading;
 mod telegram;
 mod config;

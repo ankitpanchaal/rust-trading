@@ -11,7 +11,6 @@ pub use api::router;
 pub use config::Config;
 pub use db::MongoDb;
 pub use error::AppError;
-pub mod market;
 pub mod paper_trading;
 pub mod telegram;
 pub mod binance;
