@@ -15,3 +15,4 @@ pub mod market;
 pub mod paper_trading;
 pub mod telegram;
 pub mod binance;
+pub mod strategy;

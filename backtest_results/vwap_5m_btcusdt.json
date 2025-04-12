@@ -1,0 +1,71 @@
+{
+  "symbol": "BTCUSDT",
+  "interval": "1m",
+  "start_time": "2025-04-12T09:33:00Z",
+  "end_time": "2025-04-12T11:12:59Z",
+  "initial_balance": 10000.0,
+  "final_balance": 9982.221085761326,
+  "total_profit_loss": -17.77891423867368,
+  "profit_loss_percent": -0.1777891423867368,
+  "winning_trades": 1,
+  "losing_trades": 4,
+  "total_trades": 5,
+  "win_rate": 20.0,
+  "trades": [
+    {
+      "entry_time": "2025-04-12T09:34:00Z",
+      "exit_time": "2025-04-12T09:35:59Z",
+      "entry_price": 83528.31,
+      "exit_price": 83464.11,
+      "quantity": 0.11373389453228493,
+      "side": "BUY",
+      "profit_loss": -7.301716028972805,
+      "profit_loss_percent": -0.07686016872602952,
+      "exit_reason": "SIGNAL"
+    },
+    {
+      "entry_time": "2025-04-12T09:36:00Z",
+      "exit_time": "2025-04-12T09:38:59Z",
+      "entry_price": 83492.14,
+      "exit_price": 83459.16,
+      "quantity": 0.11370008446031538,
+      "side": "BUY",
+      "profit_loss": -3.7498287854996306,
+      "profit_loss_percent": -0.039500724259776056,
+      "exit_reason": "SIGNAL"
+    },
+    {
+      "entry_time": "2025-04-12T09:39:00Z",
+      "exit_time": "2025-04-12T10:10:59Z",
+      "entry_price": 83495.27,
+      "exit_price": 83528.84,
+      "quantity": 0.11365315702825143,
+      "side": "BUY",
+      "profit_loss": 3.8153364814370434,
+      "profit_loss_percent": 0.04020587034449743,
+      "exit_reason": "SIGNAL"
+    },
+    {
+      "entry_time": "2025-04-12T10:25:00Z",
+      "exit_time": "2025-04-12T10:33:59Z",
+      "entry_price": 83499.99,
+      "exit_price": 83433.96,
+      "quantity": 0.11369014058664695,
+      "side": "BUY",
+      "profit_loss": -7.506959982936678,
+      "profit_loss_percent": -0.07907785378178289,
+      "exit_reason": "SIGNAL"
+    },
+    {
+      "entry_time": "2025-04-12T10:48:00Z",
+      "exit_time": "2025-04-12T10:50:59Z",
+      "entry_price": 83399.99,
+      "exit_price": 83373.3,
+      "quantity": 0.11374094877109489,
+      "side": "BUY",
+      "profit_loss": -3.035745922701608,
+      "profit_loss_percent": -0.03200240191876467,
+      "exit_reason": "SIGNAL"
+    }
+  ]
+}

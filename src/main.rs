@@ -13,11 +13,18 @@ mod error;
 mod middleware;
 mod utils;
 mod binance;
+mod strategy;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     // Load environment variables
     dotenv::dotenv().ok();
+    
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() > 1 && args[1] == "backtest" {
+        println!("Running backtest mode");
+        return strategy::run_backtest::run_backtest().await;
+    }
     
     // Initialize logging
     let subscriber = FmtSubscriber::builder()
@@ -33,7 +40,6 @@ async fn main() -> anyhow::Result<()> {
     let db = db::mongodb::connect(&config.mongodb_uri, &config.mongodb_name).await?;
     info!("Connected to MongoDB");
     
-
     // Build our application with routes
     let app = api::router::create_router(db).await?;
     
