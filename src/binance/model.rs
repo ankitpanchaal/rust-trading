@@ -93,3 +93,18 @@ pub struct KlineRequest {
     #[serde(default)]
     pub end_time: Option<u64>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct KlineSummary {
+    pub open_time: u64,
+    pub open: String,
+    pub high: String,
+    pub low: String,
+    pub close: String,
+    pub volume: String,
+    pub close_time: u64,
+    pub quote_asset_volume: String,
+    pub number_of_trades: u64,
+    pub taker_buy_base_asset_volume: String,
+    pub taker_buy_quote_asset_volume: String,
+}

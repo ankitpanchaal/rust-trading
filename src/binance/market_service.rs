@@ -185,11 +185,11 @@ impl BinanceMarketService {
         symbol: &str,
         interval: &str,
         limit: usize,
-    ) -> Result<Vec<f64>, AppError> {
+    ) -> Result<Vec<crate::binance::model::KlineSummary>, AppError> {
         let symbol_clone = symbol.to_string();
         let interval_clone = interval.to_string();
         let limit_clone = limit;
-
+    
         let result = task::spawn_blocking(move || {
             let market: Market = Binance::new(None, None);
             market.get_klines(
@@ -201,23 +201,32 @@ impl BinanceMarketService {
             )
         })
         .await;
-
+    
         match result {
             Ok(Ok(klines)) => {
-                let mut prices = Vec::with_capacity(limit);
-
+                let mut kline_data = Vec::with_capacity(limit);
                 match klines {
                     binance::model::KlineSummaries::AllKlineSummaries(all_klines) => {
                         for kline in all_klines {
-                            // Extract closing price from each kline and convert to f64
-                            if let Ok(close_price) = kline.close.parse::<f64>() {
-                                prices.push(close_price);
-                            }
+                            // Print the kline for debugging
+                            kline_data.push(crate::binance::model::KlineSummary {
+                                open_time: kline.open_time as u64,
+                                open: kline.open,
+                                high: kline.high,
+                                low: kline.low,
+                                close: kline.close,
+                                volume: kline.volume,
+                                close_time: kline.close_time as u64,
+                                quote_asset_volume: kline.quote_asset_volume,
+                                number_of_trades: kline.number_of_trades as u64,
+                                taker_buy_base_asset_volume: kline.taker_buy_base_asset_volume,
+                                taker_buy_quote_asset_volume: kline.taker_buy_quote_asset_volume,
+                            });
                         }
                     }
                 }
-
-                Ok(prices)
+    
+                Ok(kline_data)
             }
             Ok(Err(e)) => Err(AppError::InternalError(format!(
                 "Binance API error: {:?}",
@@ -226,7 +235,6 @@ impl BinanceMarketService {
             Err(e) => Err(AppError::InternalError(format!("Task join error: {:?}", e))),
         }
     }
-
     // Start the WebSocket connection to receive market data
     async fn start_market_data_stream(&self) {
         use binance::websockets::*;
