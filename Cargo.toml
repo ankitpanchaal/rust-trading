@@ -45,6 +45,8 @@ teloxide = { version = "0.12", features = ["macros"] }
 
 kucoin_rs = "0.4.4"
 binance = { git = "https://github.com/wisespace-io/binance-rs.git" }
+ta = "0.5.0"
+
 
 [dev-dependencies]
 tokio-test = "0.4.3"

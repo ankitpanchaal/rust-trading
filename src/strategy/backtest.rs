@@ -39,14 +39,52 @@ pub struct BacktestResult {
     pub trades: Vec<Trade>,
 }
 
-pub struct Backtest {
+pub trait Strategy {
+    fn apply_strategy(&self, klines: &[crate::binance::model::KlineSummary]) -> Vec<Signal>;
+    fn config_sl_percent(&self) -> f64;
+    fn config_tp_percent(&self) -> f64;
+}
+
+// Implement the trait for VwapStrategy
+impl Strategy for super::vwap::VwapStrategy {
+    fn apply_strategy(&self, klines: &[crate::binance::model::KlineSummary]) -> Vec<Signal> {
+        self.apply_strategy(klines)
+    }
+    
+    fn config_sl_percent(&self) -> f64 {
+        self.config().sl_percent
+    }
+    
+    fn config_tp_percent(&self) -> f64 {
+        self.config().tp_percent
+    }
+}
+
+// Implement the trait for EmaRsiStrategy
+impl Strategy for super::ema_rsi::EmaRsiStrategy {
+    fn apply_strategy(&self, klines: &[crate::binance::model::KlineSummary]) -> Vec<Signal> {
+        self.apply_strategy(klines)
+    }
+    
+    fn config_sl_percent(&self) -> f64 {
+        self.config().sl_percent
+    }
+    
+    fn config_tp_percent(&self) -> f64 {
+        self.config().tp_percent
+    }
+}
+
+// Update the Backtest struct to use the Strategy trait
+pub struct Backtest<S: Strategy> {
     market_service: BinanceMarketService,
-    strategy: VwapStrategy,
+    strategy: S,
     initial_balance: f64,
 }
 
-impl Backtest {
-    pub fn new(market_service: BinanceMarketService, strategy: VwapStrategy, initial_balance: f64) -> Self {
+
+impl<S: Strategy> Backtest<S> {
+    pub fn new(market_service: BinanceMarketService, strategy: S, initial_balance: f64) -> Self {
         Self {
             market_service,
             strategy,
@@ -146,7 +184,7 @@ impl Backtest {
                 let profit_loss_percent = (current_close - entry_price) / entry_price * 100.0;
                 
                 // Check stop-loss
-                if profit_loss_percent <= -self.strategy.config().sl_percent {
+                if profit_loss_percent <= -self.strategy.config_sl_percent() {
                     // Close position at stop-loss
                     let trade_value = qty * current_close;
                     let profit_loss = trade_value - (qty * entry_price);
@@ -168,7 +206,7 @@ impl Backtest {
                     trades[trade_idx] = trade;
                 }
                 // Check take-profit
-                else if profit_loss_percent >= self.strategy.config().tp_percent {
+                else if profit_loss_percent >= self.strategy.config_tp_percent() {
                     // Close position at take-profit
                     let trade_value = qty * current_close;
                     let profit_loss = trade_value - (qty * entry_price);
