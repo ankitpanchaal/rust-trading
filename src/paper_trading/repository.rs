@@ -21,6 +21,10 @@ impl PaperTradingRepository {
         Self { db }
     }
 
+    pub fn get_repository(&self) -> &PaperTradingRepository {
+        self
+    }
+    
     // User-related methods
     pub async fn enable_paper_trading(&self, user_id: &str, initial_balance: f64) -> Result<User, AppError> {
         let user_id_obj = ObjectId::from_str(user_id)

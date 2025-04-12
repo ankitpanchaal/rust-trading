@@ -1,59 +1,26 @@
 {
   "symbol": "BTCUSDT",
   "interval": "5m",
-  "start_time": "2025-04-09T00:05:00Z",
-  "end_time": "2025-04-12T11:24:59Z",
+  "start_time": "2025-04-09T00:55:00Z",
+  "end_time": "2025-04-12T12:14:59Z",
   "initial_balance": 10000.0,
-  "final_balance": 10705.112678309422,
-  "total_profit_loss": 705.1126783094223,
-  "profit_loss_percent": 7.051126783094223,
-  "winning_trades": 15,
-  "losing_trades": 40,
-  "total_trades": 55,
-  "win_rate": 27.27272727272727,
+  "final_balance": 10875.440289435008,
+  "total_profit_loss": 875.4402894350078,
+  "profit_loss_percent": 8.754402894350077,
+  "winning_trades": 16,
+  "losing_trades": 36,
+  "total_trades": 52,
+  "win_rate": 30.76923076923077,
   "trades": [
     {
-      "entry_time": "2025-04-09T00:10:00Z",
-      "exit_time": "2025-04-09T00:54:59Z",
-      "entry_price": 76645.98,
-      "exit_price": 76416.0,
-      "quantity": 0.12394648747396798,
-      "side": "BUY",
-      "profit_loss": -28.505213189262577,
-      "profit_loss_percent": -0.3000548756764482,
-      "exit_reason": "SIGNAL"
-    },
-    {
-      "entry_time": "2025-04-09T00:55:00Z",
-      "exit_time": "2025-04-09T01:04:59Z",
-      "entry_price": 76522.07,
-      "exit_price": 76408.73,
-      "quantity": 0.1237933062640647,
-      "side": "BUY",
-      "profit_loss": -14.030733331970623,
-      "profit_loss_percent": -0.14811413230197815,
-      "exit_reason": "SIGNAL"
-    },
-    {
-      "entry_time": "2025-04-09T01:35:00Z",
-      "exit_time": "2025-04-09T01:44:59Z",
-      "entry_price": 75679.74,
-      "exit_price": 75494.61,
-      "quantity": 0.1249950231172151,
-      "side": "BUY",
-      "profit_loss": -23.140328629689975,
-      "profit_loss_percent": -0.244622933429739,
-      "exit_reason": "SIGNAL"
-    },
-    {
-      "entry_time": "2025-04-09T01:45:00Z",
+      "entry_time": "2025-04-09T01:30:00Z",
       "exit_time": "2025-04-09T03:04:59Z",
-      "entry_price": 76136.0,
+      "entry_price": 75405.05,
       "exit_price": 75600.57,
-      "quantity": 0.1239572283624911,
+      "quantity": 0.12598625688863013,
       "side": "BUY",
-      "profit_loss": -66.37041878212767,
-      "profit_loss_percent": -0.7032547021120001,
+      "profit_loss": 24.632832946865165,
+      "profit_loss_percent": 0.2592929783880544,
       "exit_reason": "SIGNAL"
     },
     {
@@ -61,10 +28,10 @@
       "exit_time": "2025-04-09T06:59:59Z",
       "entry_price": 75819.54,
       "exit_price": 76829.02,
-      "quantity": 0.123643003383608,
+      "quantity": 0.12560615893079174,
       "side": "BUY",
-      "profit_loss": 124.815139055685,
-      "profit_loss_percent": 1.3314245905475068,
+      "profit_loss": 126.79690531745655,
+      "profit_loss_percent": 1.3314245905475122,
       "exit_reason": "SIGNAL"
     },
     {
@@ -72,10 +39,10 @@
       "exit_time": "2025-04-09T08:09:59Z",
       "entry_price": 77479.7,
       "exit_price": 77417.65,
-      "quantity": 0.12252409370282155,
+      "quantity": 0.12446948363701854,
       "side": "BUY",
-      "profit_loss": -7.602620014260538,
-      "profit_loss_percent": -0.08008549336149179,
+      "profit_loss": -7.7233314596760465,
+      "profit_loss_percent": -0.08008549336147706,
       "exit_reason": "SIGNAL"
     },
     {
@@ -83,10 +50,10 @@
       "exit_time": "2025-04-09T10:24:59Z",
       "entry_price": 77509.43,
       "exit_price": 77260.0,
-      "quantity": 0.12238391552941308,
+      "quantity": 0.12432707976906053,
       "side": "BUY",
-      "profit_loss": -30.526220050500342,
-      "profit_loss_percent": -0.32180600476611754,
+      "profit_loss": -31.01090350679624,
+      "profit_loss_percent": -0.3218060047661243,
       "exit_reason": "SIGNAL"
     },
     {
@@ -94,10 +61,10 @@
       "exit_time": "2025-04-09T10:59:59Z",
       "entry_price": 77347.83,
       "exit_price": 77190.0,
-      "quantity": 0.12226467923928801,
+      "quantity": 0.1242059502914685,
       "side": "BUY",
-      "profit_loss": -19.2970343243378,
-      "profit_loss_percent": -0.2040522662368265,
+      "profit_loss": -19.603425134502686,
+      "profit_loss_percent": -0.2040522662368184,
       "exit_reason": "SIGNAL"
     },
     {
@@ -105,10 +72,10 @@
       "exit_time": "2025-04-09T12:24:59Z",
       "entry_price": 76471.05,
       "exit_price": 76253.3,
-      "quantity": 0.12342677970548145,
+      "quantity": 0.12538650213715097,
       "side": "BUY",
-      "profit_loss": -26.876181280867968,
-      "profit_loss_percent": -0.28474828055845314,
+      "profit_loss": -27.302910840364348,
+      "profit_loss_percent": -0.2847482805584568,
       "exit_reason": "SIGNAL"
     },
     {
@@ -116,10 +83,10 @@
       "exit_time": "2025-04-09T14:44:59Z",
       "entry_price": 76509.99,
       "exit_price": 77470.0,
-      "quantity": 0.12303024833724373,
+      "quantity": 0.12498367479798171,
       "side": "BUY",
-      "profit_loss": 118.11026870623755,
-      "profit_loss_percent": 1.254751176937811,
+      "profit_loss": 119.98557764281031,
+      "profit_loss_percent": 1.2547511769378077,
       "exit_reason": "SIGNAL"
     },
     {
@@ -127,9 +94,9 @@
       "exit_time": "2025-04-09T17:34:59Z",
       "entry_price": 77508.23,
       "exit_price": 81534.91,
-      "quantity": 0.12289337306826591,
+      "quantity": 0.12484462627668706,
       "side": "BUY",
-      "profit_loss": 494.85228746652683,
+      "profit_loss": 502.70935973581254,
       "profit_loss_percent": 5.195164436086346,
       "exit_reason": "TAKE_PROFIT"
     },
@@ -138,10 +105,10 @@
       "exit_time": "2025-04-09T20:14:59Z",
       "entry_price": 82332.08,
       "exit_price": 82170.47,
-      "quantity": 0.12140295129607025,
+      "quantity": 0.12333054016692552,
       "side": "BUY",
-      "profit_loss": -19.61993095895741,
-      "profit_loss_percent": -0.19629043745766642,
+      "profit_loss": -19.931448596376867,
+      "profit_loss_percent": -0.19629043745767175,
       "exit_reason": "SIGNAL"
     },
     {
@@ -149,10 +116,10 @@
       "exit_time": "2025-04-09T22:34:59Z",
       "entry_price": 82466.01,
       "exit_price": 83239.99,
-      "quantity": 0.12097976565051652,
+      "quantity": 0.12290063534418565,
       "side": "BUY",
-      "profit_loss": 93.63591901818836,
-      "profit_loss_percent": 0.93854425599106,
+      "profit_loss": 95.12263374369468,
+      "profit_loss_percent": 0.9385442559910626,
       "exit_reason": "SIGNAL"
     },
     {
@@ -160,10 +127,10 @@
       "exit_time": "2025-04-10T01:24:59Z",
       "entry_price": 82452.11,
       "exit_price": 82406.96,
-      "quantity": 0.12207901880255617,
+      "quantity": 0.1240173420104892,
       "side": "BUY",
-      "profit_loss": -5.511867698935021,
-      "profit_loss_percent": -0.054759059531644255,
+      "profit_loss": -5.599382991771563,
+      "profit_loss_percent": -0.05475905953162834,
       "exit_reason": "SIGNAL"
     },
     {
@@ -171,10 +138,10 @@
       "exit_time": "2025-04-10T01:34:59Z",
       "entry_price": 82426.15,
       "exit_price": 82292.28,
-      "quantity": 0.12205394055996115,
+      "quantity": 0.1239918655853063,
       "side": "BUY",
-      "profit_loss": -16.339361022761295,
-      "profit_loss_percent": -0.1624120500593492,
+      "profit_loss": -16.598791045904363,
+      "profit_loss_percent": -0.16241205005935042,
       "exit_reason": "SIGNAL"
     },
     {
@@ -182,10 +149,10 @@
       "exit_time": "2025-04-10T01:44:59Z",
       "entry_price": 82446.0,
       "exit_price": 82380.0,
-      "quantity": 0.12183628095619942,
+      "quantity": 0.12377075006696121,
       "side": "BUY",
-      "profit_loss": -8.041194543109668,
-      "profit_loss_percent": -0.08005239793319768,
+      "profit_loss": -8.16886950441949,
+      "profit_loss_percent": -0.08005239793319312,
       "exit_reason": "SIGNAL"
     },
     {
@@ -193,10 +160,10 @@
       "exit_time": "2025-04-10T01:54:59Z",
       "entry_price": 82432.41,
       "exit_price": 82343.99,
-      "quantity": 0.12176369567381158,
+      "quantity": 0.12369701230367382,
       "side": "BUY",
-      "profit_loss": -10.766345971478586,
-      "profit_loss_percent": -0.10726363574715499,
+      "profit_loss": -10.937289827890709,
+      "profit_loss_percent": -0.10726363574715206,
       "exit_reason": "SIGNAL"
     },
     {
@@ -204,10 +171,10 @@
       "exit_time": "2025-04-10T02:34:59Z",
       "entry_price": 82412.1,
       "exit_price": 82348.5,
-      "quantity": 0.12166959531702212,
+      "quantity": 0.12360141785799644,
       "side": "BUY",
-      "profit_loss": -7.738186262162344,
-      "profit_loss_percent": -0.07717313355684158,
+      "profit_loss": -7.861050175768469,
+      "profit_loss_percent": -0.07717313355684316,
       "exit_reason": "SIGNAL"
     },
     {
@@ -215,10 +182,10 @@
       "exit_time": "2025-04-10T06:29:59Z",
       "entry_price": 82426.4,
       "exit_price": 82077.64,
-      "quantity": 0.12155930113746208,
+      "quantity": 0.12348937247032517,
       "side": "BUY",
-      "profit_loss": -42.39502186470054,
-      "profit_loss_percent": -0.4231168654702789,
+      "profit_loss": -43.068153542750224,
+      "profit_loss_percent": -0.42311686547028254,
       "exit_reason": "SIGNAL"
     },
     {
@@ -226,10 +193,10 @@
       "exit_time": "2025-04-10T07:09:59Z",
       "entry_price": 82156.72,
       "exit_price": 82076.44,
-      "quantity": 0.12146809547052803,
+      "quantity": 0.12339671867526353,
       "side": "BUY",
-      "profit_loss": -9.751458704373363,
-      "profit_loss_percent": -0.09771568290456926,
+      "profit_loss": -9.906288575250073,
+      "profit_loss_percent": -0.09771568290457473,
       "exit_reason": "SIGNAL"
     },
     {
@@ -237,10 +204,10 @@
       "exit_time": "2025-04-10T07:19:59Z",
       "entry_price": 82111.99,
       "exit_price": 82036.97,
-      "quantity": 0.12142144433153167,
+      "quantity": 0.12334932682761565,
       "side": "BUY",
-      "profit_loss": -9.109036753750843,
-      "profit_loss_percent": -0.09136302749451637,
+      "profit_loss": -9.253666498609164,
+      "profit_loss_percent": -0.09136302749453722,
       "exit_reason": "SIGNAL"
     },
     {
@@ -248,10 +215,10 @@
       "exit_time": "2025-04-10T08:54:59Z",
       "entry_price": 81673.31,
       "exit_price": 81545.79,
-      "quantity": 0.12196766407312525,
+      "quantity": 0.12390421923394841,
       "side": "BUY",
-      "profit_loss": -15.55331652260611,
-      "profit_loss_percent": -0.1561342377332444,
+      "profit_loss": -15.800266036714675,
+      "profit_loss_percent": -0.1561342377332481,
       "exit_reason": "SIGNAL"
     },
     {
@@ -259,10 +226,10 @@
       "exit_time": "2025-04-10T12:09:59Z",
       "entry_price": 81789.28,
       "exit_price": 81671.7,
-      "quantity": 0.12161406955928386,
+      "quantity": 0.1235450104838599,
       "side": "BUY",
-      "profit_loss": -14.299382298780984,
-      "profit_loss_percent": -0.14375967119407723,
+      "profit_loss": -14.526422332692164,
+      "profit_loss_percent": -0.14375967119407254,
       "exit_reason": "SIGNAL"
     },
     {
@@ -270,10 +237,10 @@
       "exit_time": "2025-04-10T12:24:59Z",
       "entry_price": 81747.6,
       "exit_price": 81701.63,
-      "quantity": 0.12150990088932156,
+      "quantity": 0.1234391878642467,
       "side": "BUY",
-      "profit_loss": -5.585810143882554,
-      "profit_loss_percent": -0.056234066810528546,
+      "profit_loss": -5.674499466120324,
+      "profit_loss_percent": -0.05623406681053304,
       "exit_reason": "SIGNAL"
     },
     {
@@ -281,10 +248,10 @@
       "exit_time": "2025-04-10T12:44:59Z",
       "entry_price": 82007.94,
       "exit_price": 81844.0,
-      "quantity": 0.12105945173483462,
+      "quantity": 0.12298158665317625,
       "side": "BUY",
-      "profit_loss": -19.846486517410085,
-      "profit_loss_percent": -0.1999074723740295,
+      "profit_loss": -20.16160131592187,
+      "profit_loss_percent": -0.199907472374018,
       "exit_reason": "SIGNAL"
     },
     {
@@ -292,10 +259,10 @@
       "exit_time": "2025-04-10T15:04:59Z",
       "entry_price": 81436.01,
       "exit_price": 80982.01,
-      "quantity": 0.12167813835810075,
+      "quantity": 0.12361009654216057,
       "side": "BUY",
-      "profit_loss": -55.241874814577386,
-      "profit_loss_percent": -0.5574929321807357,
+      "profit_loss": -56.11898383014159,
+      "profit_loss_percent": -0.5574929321807461,
       "exit_reason": "SIGNAL"
     },
     {
@@ -303,10 +270,10 @@
       "exit_time": "2025-04-10T17:09:59Z",
       "entry_price": 79442.0,
       "exit_price": 78834.0,
-      "quantity": 0.12407167884793718,
+      "quantity": 0.12604164073751567,
       "side": "BUY",
-      "profit_loss": -75.43558073954591,
-      "profit_loss_percent": -0.7653382341834304,
+      "profit_loss": -76.63331756841035,
+      "profit_loss_percent": -0.7653382341834376,
       "exit_reason": "SIGNAL"
     },
     {
@@ -314,10 +281,10 @@
       "exit_time": "2025-04-10T19:44:59Z",
       "entry_price": 79052.82,
       "exit_price": 79345.99,
-      "quantity": 0.12377595776261059,
+      "quantity": 0.12574122430774423,
       "side": "BUY",
-      "profit_loss": 36.28739753726404,
-      "profit_loss_percent": 0.37085331048278336,
+      "profit_loss": 36.863554730301985,
+      "profit_loss_percent": 0.3708533104827947,
       "exit_reason": "SIGNAL"
     },
     {
@@ -325,10 +292,10 @@
       "exit_time": "2025-04-10T20:24:59Z",
       "entry_price": 79700.82,
       "exit_price": 79585.39,
-      "quantity": 0.12320213941331669,
+      "quantity": 0.1251582950937458,
       "side": "BUY",
-      "profit_loss": -14.221222952479366,
-      "profit_loss_percent": -0.14482912471917075,
+      "profit_loss": -14.447022002672384,
+      "profit_loss_percent": -0.1448291247191816,
       "exit_reason": "SIGNAL"
     },
     {
@@ -336,10 +303,10 @@
       "exit_time": "2025-04-10T21:24:59Z",
       "entry_price": 79729.26,
       "exit_price": 79714.65,
-      "quantity": 0.12298874183945523,
+      "quantity": 0.12494150927615505,
       "side": "BUY",
-      "profit_loss": -1.7968655182758084,
-      "profit_loss_percent": -0.018324514739019426,
+      "profit_loss": -1.8253954505253205,
+      "profit_loss_percent": -0.01832451473901246,
       "exit_reason": "SIGNAL"
     },
     {
@@ -347,10 +314,10 @@
       "exit_time": "2025-04-10T21:49:59Z",
       "entry_price": 79844.19,
       "exit_price": 79759.99,
-      "quantity": 0.12279032892623046,
+      "quantity": 0.12473994603981803,
       "side": "BUY",
-      "profit_loss": -10.338945695588336,
-      "profit_loss_percent": -0.10545538754917272,
+      "profit_loss": -10.503103456552708,
+      "profit_loss_percent": -0.10545538754917576,
       "exit_reason": "SIGNAL"
     },
     {
@@ -358,10 +325,10 @@
       "exit_time": "2025-04-10T22:24:59Z",
       "entry_price": 79828.0,
       "exit_price": 79806.01,
-      "quantity": 0.12269219264590911,
+      "quantity": 0.1246402515897837,
       "side": "BUY",
-      "profit_loss": -2.698001316284717,
-      "profit_loss_percent": -0.027546725459750444,
+      "profit_loss": -2.7408391324588592,
+      "profit_loss_percent": -0.02754672545973357,
       "exit_reason": "SIGNAL"
     },
     {
@@ -369,10 +336,10 @@
       "exit_time": "2025-04-10T22:54:59Z",
       "entry_price": 79835.32,
       "exit_price": 79766.02,
-      "quantity": 0.12264883829972952,
+      "quantity": 0.12459620888014748,
       "side": "BUY",
-      "profit_loss": -8.499564494171864,
-      "profit_loss_percent": -0.08680368538637405,
+      "profit_loss": -8.63451727539541,
+      "profit_loss_percent": -0.0868036853863798,
       "exit_reason": "SIGNAL"
     },
     {
@@ -380,10 +347,10 @@
       "exit_time": "2025-04-10T23:54:59Z",
       "entry_price": 79698.97,
       "exit_price": 79656.0,
-      "quantity": 0.1227573539158373,
+      "quantity": 0.12470644746502738,
       "side": "BUY",
-      "profit_loss": -5.274883497762858,
-      "profit_loss_percent": -0.05391537682355812,
+      "profit_loss": -5.3586360475728725,
+      "profit_loss_percent": -0.053915376823571476,
       "exit_reason": "SIGNAL"
     },
     {
@@ -391,10 +358,10 @@
       "exit_time": "2025-04-11T00:19:59Z",
       "entry_price": 79612.71,
       "exit_price": 79510.93,
-      "quantity": 0.12282741697518931,
+      "quantity": 0.12477762295840196,
       "side": "BUY",
-      "profit_loss": -12.501374499735903,
-      "profit_loss_percent": -0.12784390834077777,
+      "profit_loss": -12.699866464707156,
+      "profit_loss_percent": -0.1278439083407763,
       "exit_reason": "SIGNAL"
     },
     {
@@ -402,10 +369,10 @@
       "exit_time": "2025-04-11T05:04:59Z",
       "entry_price": 79408.7,
       "exit_price": 80672.94,
-      "quantity": 0.12299341535524541,
+      "quantity": 0.12494625699621233,
       "side": "BUY",
-      "profit_loss": 155.49319542871672,
-      "profit_loss_percent": 1.5920673679332495,
+      "profit_loss": 157.9620559448922,
+      "profit_loss_percent": 1.592067367933244,
       "exit_reason": "SIGNAL"
     },
     {
@@ -413,10 +380,10 @@
       "exit_time": "2025-04-11T05:34:59Z",
       "entry_price": 80804.01,
       "exit_price": 80739.14,
-      "quantity": 0.12269769479976744,
+      "quantity": 0.12464584110470228,
       "side": "BUY",
-      "profit_loss": -7.959399461660723,
-      "profit_loss_percent": -0.08028066923906184,
+      "profit_loss": -8.085775712461327,
+      "profit_loss_percent": -0.08028066923905672,
       "exit_reason": "SIGNAL"
     },
     {
@@ -424,10 +391,10 @@
       "exit_time": "2025-04-11T07:09:59Z",
       "entry_price": 80816.0,
       "exit_price": 80975.17,
-      "quantity": 0.12258592763918999,
+      "quantity": 0.12453229934859353,
       "side": "BUY",
-      "profit_loss": 19.51200210233037,
-      "profit_loss_percent": 0.19695357354979717,
+      "profit_loss": 19.821806087315053,
+      "profit_loss_percent": 0.19695357354978638,
       "exit_reason": "SIGNAL"
     },
     {
@@ -435,10 +402,10 @@
       "exit_time": "2025-04-11T08:34:59Z",
       "entry_price": 81045.66,
       "exit_price": 81244.0,
-      "quantity": 0.12246727005599056,
+      "quantity": 0.12441175776641074,
       "side": "BUY",
-      "profit_loss": 24.29015834290476,
-      "profit_loss_percent": 0.24472624444047547,
+      "profit_loss": 24.675828035389713,
+      "profit_loss_percent": 0.2447262444404777,
       "exit_reason": "SIGNAL"
     },
     {
@@ -446,10 +413,10 @@
       "exit_time": "2025-04-11T11:19:59Z",
       "entry_price": 81702.27,
       "exit_price": 82521.72,
-      "quantity": 0.12176548314400262,
+      "quantity": 0.1236988281546217,
       "side": "BUY",
-      "profit_loss": 99.78072516235261,
-      "profit_loss_percent": 1.002970908886616,
+      "profit_loss": 101.365004731304,
+      "profit_loss_percent": 1.0029709088866123,
       "exit_reason": "SIGNAL"
     },
     {
@@ -457,10 +424,10 @@
       "exit_time": "2025-04-11T13:29:59Z",
       "entry_price": 82158.38,
       "exit_price": 82125.17,
-      "quantity": 0.12224325831906602,
+      "quantity": 0.12418418925820157,
       "side": "BUY",
-      "profit_loss": -4.059698608776671,
-      "profit_loss_percent": -0.04042192652776746,
+      "profit_loss": -4.124156925265197,
+      "profit_loss_percent": -0.040421926527765766,
       "exit_reason": "SIGNAL"
     },
     {
@@ -468,10 +435,10 @@
       "exit_time": "2025-04-11T14:14:59Z",
       "entry_price": 82450.5,
       "exit_price": 82532.61,
-      "quantity": 0.12176337748998063,
+      "quantity": 0.12369668906784365,
       "side": "BUY",
-      "profit_loss": 9.997990925701743,
-      "profit_loss_percent": 0.09958702494223243,
+      "profit_loss": 10.156735139360535,
+      "profit_loss_percent": 0.09958702494223703,
       "exit_reason": "SIGNAL"
     },
     {
@@ -479,10 +446,10 @@
       "exit_time": "2025-04-11T16:24:59Z",
       "entry_price": 82447.79,
       "exit_price": 82150.01,
-      "quantity": 0.12188258105059052,
+      "quantity": 0.12381778529625398,
       "side": "BUY",
-      "profit_loss": -36.29419498524476,
-      "profit_loss_percent": -0.36117402297866236,
+      "profit_loss": -36.87046010551785,
+      "profit_loss_percent": -0.3611740229786568,
       "exit_reason": "SIGNAL"
     },
     {
@@ -490,10 +457,10 @@
       "exit_time": "2025-04-11T18:54:59Z",
       "entry_price": 82246.35,
       "exit_price": 83727.27,
-      "quantity": 0.1217618771152894,
+      "quantity": 0.12369516487078626,
       "side": "BUY",
-      "profit_loss": 180.3195990575732,
-      "profit_loss_percent": 1.8005905429237776,
+      "profit_loss": 183.18264356044529,
+      "profit_loss_percent": 1.8005905429237943,
       "exit_reason": "SIGNAL"
     },
     {
@@ -501,10 +468,10 @@
       "exit_time": "2025-04-11T19:29:59Z",
       "entry_price": 83909.67,
       "exit_price": 83764.83,
-      "quantity": 0.12138974662855637,
+      "quantity": 0.12331712584083356,
       "side": "BUY",
-      "profit_loss": -17.582090901680203,
-      "profit_loss_percent": -0.17261419333433303,
+      "profit_loss": -17.861252506785604,
+      "profit_loss_percent": -0.17261419333432498,
       "exit_reason": "SIGNAL"
     },
     {
@@ -512,10 +479,10 @@
       "exit_time": "2025-04-11T20:09:59Z",
       "entry_price": 83863.99,
       "exit_price": 83716.99,
-      "quantity": 0.12125669902695044,
+      "quantity": 0.12318196576112546,
       "side": "BUY",
-      "profit_loss": -17.824734756961334,
-      "profit_loss_percent": -0.17528381370835905,
+      "profit_loss": -18.107748966885993,
+      "profit_loss_percent": -0.1752838137083681,
       "exit_reason": "SIGNAL"
     },
     {
@@ -523,10 +490,10 @@
       "exit_time": "2025-04-11T20:39:59Z",
       "entry_price": 83824.0,
       "exit_price": 83843.14,
-      "quantity": 0.12111253455585592,
+      "quantity": 0.12303551230259624,
       "side": "BUY",
-      "profit_loss": 2.318093911399046,
-      "profit_loss_percent": 0.022833556022141273,
+      "profit_loss": 2.3548997054713254,
+      "profit_loss_percent": 0.022833556022138074,
       "exit_reason": "SIGNAL"
     },
     {
@@ -534,10 +501,10 @@
       "exit_time": "2025-04-11T20:59:59Z",
       "entry_price": 83972.87,
       "exit_price": 83848.0,
-      "quantity": 0.12092404708599215,
+      "quantity": 0.12284403210195181,
       "side": "BUY",
-      "profit_loss": -15.099785759628503,
-      "profit_loss_percent": -0.14870278936519077,
+      "profit_loss": -15.339534288570576,
+      "profit_loss_percent": -0.14870278936518286,
       "exit_reason": "SIGNAL"
     },
     {
@@ -545,10 +512,10 @@
       "exit_time": "2025-04-11T21:29:59Z",
       "entry_price": 83973.06,
       "exit_price": 83910.01,
-      "quantity": 0.12075294730660346,
+      "quantity": 0.12267021566677316,
       "side": "BUY",
-      "profit_loss": -7.613473327681277,
-      "profit_loss_percent": -0.07508360419401104,
+      "profit_loss": -7.734357097790053,
+      "profit_loss_percent": -0.0750836041940118,
       "exit_reason": "SIGNAL"
     },
     {
@@ -556,10 +523,10 @@
       "exit_time": "2025-04-12T00:04:59Z",
       "entry_price": 83448.41,
       "exit_price": 83344.13,
-      "quantity": 0.12142546142812011,
+      "quantity": 0.12335340770610227,
       "side": "BUY",
-      "profit_loss": -12.662247117723382,
-      "profit_loss_percent": -0.12496343549264978,
+      "profit_loss": -12.86329335559276,
+      "profit_loss_percent": -0.1249634354926635,
       "exit_reason": "SIGNAL"
     },
     {
@@ -567,10 +534,10 @@
       "exit_time": "2025-04-12T00:54:59Z",
       "entry_price": 83382.7,
       "exit_price": 83376.51,
-      "quantity": 0.12137688699131972,
+      "quantity": 0.12330406202327544,
       "side": "BUY",
-      "profit_loss": -0.7513229304768174,
-      "profit_loss_percent": -0.0074236022580277655,
+      "profit_loss": -0.7632521439245465,
+      "profit_loss_percent": -0.0074236022580269345,
       "exit_reason": "SIGNAL"
     },
     {
@@ -578,10 +545,10 @@
       "exit_time": "2025-04-12T03:54:59Z",
       "entry_price": 83068.38,
       "exit_price": 83025.11,
-      "quantity": 0.12182756902382305,
+      "quantity": 0.12376189980990891,
       "side": "BUY",
-      "profit_loss": -5.2714789116616885,
-      "profit_loss_percent": -0.052089615808093404,
+      "profit_loss": -5.355177404775532,
+      "profit_loss_percent": -0.05208961580809238,
       "exit_reason": "SIGNAL"
     },
     {
@@ -589,10 +556,10 @@
       "exit_time": "2025-04-12T07:04:59Z",
       "entry_price": 83131.84,
       "exit_price": 83499.67,
-      "quantity": 0.12167432951298907,
+      "quantity": 0.12360622722168671,
       "side": "BUY",
-      "profit_loss": 44.755468624762216,
-      "profit_loss_percent": 0.44246584702082314,
+      "profit_loss": 45.466078558953086,
+      "profit_loss_percent": 0.4424658470208292,
       "exit_reason": "SIGNAL"
     },
     {
@@ -600,21 +567,21 @@
       "exit_time": "2025-04-12T08:24:59Z",
       "entry_price": 83597.1,
       "exit_price": 83644.02,
-      "quantity": 0.12150575305093846,
+      "quantity": 0.12343497416809805,
       "side": "BUY",
-      "profit_loss": 5.701049933149989,
-      "profit_loss_percent": 0.05612634888052294,
+      "profit_loss": 5.791568987966457,
+      "profit_loss_percent": 0.05612634888051655,
       "exit_reason": "SIGNAL"
     },
     {
       "entry_time": "2025-04-12T11:00:00Z",
-      "exit_time": "2025-04-12T11:24:59Z",
+      "exit_time": "2025-04-12T12:14:59Z",
       "entry_price": 83524.1,
-      "exit_price": 83583.9,
-      "quantity": 0.12167679251630488,
+      "exit_price": 83586.78,
+      "quantity": 0.1236087293316118,
       "side": "BUY",
-      "profit_loss": 7.276272192473698,
-      "profit_loss_percent": 0.07159610220282413,
+      "profit_loss": 7.747795154504274,
+      "profit_loss_percent": 0.07504420879721023,
       "exit_reason": "END_OF_BACKTEST"
     }
   ]
